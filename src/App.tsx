@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import TextInput from './TextInput'
 
 interface AppProps
 {
@@ -17,6 +18,7 @@ class App extends Component<AppProps, AppState>
         <p className="App-intro">
           Hello World.
         </p>
+        <TextInput />
       </div>
     );
   }
