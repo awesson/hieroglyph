@@ -34,7 +34,7 @@ class StatementPicker extends React.Component<IStatementPickerProps, {}>
 		// TODO: Should eventually be more than just function defs
 		// and should go through a selector instead of accessing the data directly.
 		let items: IItemInfo[] = [];
-		for (let [id, funcDef] of this.props.rootState.functionState.functions)
+		for (let [id, funcDef] of this.props.rootState.functionsState.functions)
 		{
 			items.push({ id: id, displayText: funcDef.name });
 		}

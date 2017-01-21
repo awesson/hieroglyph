@@ -54,7 +54,7 @@ class FunctionCallState
 	}
 }
 
-class FunctionState
+class FunctionsState
 {
 	functions: Map<number, FunctionDefState>;
 	nextFunctionID: number;
@@ -72,9 +72,9 @@ class FunctionState
 		this.nextFunctionCallID = nextFunctionCallID;
 	}
 
-	static withNewFunctionCall(state: FunctionState, sourceFuncDefId: number): FunctionState
+	static withNewFunctionCall(state: FunctionsState, sourceFuncDefId: number): FunctionsState
 	{
-		const funcDef = FunctionState.getFuncDef(state, sourceFuncDefId);
+		const funcDef = FunctionsState.getFuncDef(state, sourceFuncDefId);
 		const defaultArgs = FunctionDefState.getDefaultArguments(funcDef);
 		const newFuncCall = new FunctionCallState(state.nextFunctionCallID,
 		                                          sourceFuncDefId,
@@ -82,13 +82,13 @@ class FunctionState
 		const newFuncCallMap = copyMapWithAddedEntry(state.functionCalls,
 		                                             state.nextFunctionCallID,
 		                                             newFuncCall);
-		return new FunctionState(state.functions,
-		                         state.nextFunctionID,
-		                         newFuncCallMap,
-		                        state.nextFunctionCallID + 1);
+		return new FunctionsState(state.functions,
+		                          state.nextFunctionID,
+		                          newFuncCallMap,
+		                          state.nextFunctionCallID + 1);
 	}
 
-	static withNewFuncDef(state: FunctionState,
+	static withNewFuncDef(state: FunctionsState,
 	                      name: string = "unnamed",
 	                      returnType: Type = Type.Void,
 	                      argumentTypes: Type[] = null,
@@ -102,23 +102,23 @@ class FunctionState
 		const newFuncDefMap = copyMapWithAddedEntry(state.functions,
 		                                            state.nextFunctionID,
 		                                            newFuncDef);
-		return new FunctionState(newFuncDefMap,
-		                         state.nextFunctionID + 1,
-		                         state.functionCalls,
-		                         state.nextFunctionCallID);
+		return new FunctionsState(newFuncDefMap,
+		                          state.nextFunctionID + 1,
+		                          state.functionCalls,
+		                          state.nextFunctionCallID);
 	}
 
-	static getFuncDef(state: FunctionState, id: number)
+	static getFuncDef(state: FunctionsState, id: number)
 	{
 		return state.functions.get(id);
 	}
 
-	static getFuncCall(state: FunctionState, id: number)
+	static getFuncCall(state: FunctionsState, id: number)
 	{
 		return state.functionCalls.get(id);
 	}
 
-	static getLastCreatedFuncCall(state: FunctionState)
+	static getLastCreatedFuncCall(state: FunctionsState)
 	{
 		let lastFuncCallId = state.nextFunctionCallID;
 		let funcCall: FunctionCallState;
@@ -126,11 +126,11 @@ class FunctionState
 		while (!funcCall && lastFuncCallId > 0)
 		{
 			--lastFuncCallId;
-			funcCall = FunctionState.getFuncCall(state, lastFuncCallId);
+			funcCall = FunctionsState.getFuncCall(state, lastFuncCallId);
 		}
 
 		return funcCall;
 	}
 }
 
-export { FunctionState, FunctionDefState, FunctionCallState };
+export { FunctionsState, FunctionDefState, FunctionCallState };

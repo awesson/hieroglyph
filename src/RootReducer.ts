@@ -17,9 +17,9 @@ function rootReducer(state = new RootState(), action: AllActions)
 	switch (action.type)
 	{
 		case "AddFunctionCallAction":
-			let newFunctionState = Functions.reducer(state.functionState, action);
+			let newFunctionState = Functions.reducer(state.functionsState, action);
 
-			let newFuncCall = Functions.FunctionState.getLastCreatedFuncCall(newFunctionState);
+			let newFuncCall = Functions.FunctionsState.getLastCreatedFuncCall(newFunctionState);
 			if (!newFuncCall)
 			{
 				return state;
@@ -28,7 +28,7 @@ function rootReducer(state = new RootState(), action: AllActions)
 			const statementType = Statements.StatementType.FunctionCall;
 			let derivedAction = Statements.createAddStatementAction(newFuncCall.myId,
 			                                                        statementType);
-			let newStatementState = Statements.reducer(state.statementState, derivedAction);
+			let newStatementState = Statements.reducer(state.statementsState, derivedAction);
 
 			return new RootState(newStatementState, newFunctionState);
 

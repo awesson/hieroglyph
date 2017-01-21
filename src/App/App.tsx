@@ -55,7 +55,7 @@ class App extends Component<IAppProps, IAppState>
 		// a function def or potentially a type with a set of statements and this statement list
 		// would only have those statements.
 		let statements: number[] = [];
-		for (const [id, statement] of this.props.rootState.statementState.statements)
+		for (const [id, statement] of this.props.rootState.statementsState.statements)
 		{
 			statements.push(id);
 		}
