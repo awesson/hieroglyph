@@ -1,43 +1,43 @@
 import { Type } from './Types';
-import { FunctionState } from './Statements/Functions/FunctionState'
+import { FunctionsState } from './Statements/Functions/FunctionState'
 import { StatementsState } from './Statements';
 
 
 class RootState
 {
-	statementState: StatementsState;
-	functionState: FunctionState;
+	statementsState: StatementsState;
+	functionsState: FunctionsState;
 
-	constructor(statementState: StatementsState = new StatementsState(),
-	            functionState: FunctionState = new FunctionState())
+	constructor(statementsState: StatementsState = new StatementsState(),
+	            functionsState: FunctionsState = new FunctionsState())
 	{
-		this.statementState = statementState;
-		this.functionState = functionState;
+		this.statementsState = statementsState;
+		this.functionsState = functionsState;
 
-		if (functionState.functions.size == 0)
+		if (functionsState.functions.size == 0)
 		{
 			// TODO: Eventually deserialize this data the same as how the user
 			// created data will get deserialized.
-			this.functionState = FunctionState.withNewFuncDef(this.functionState,
-			                                                  "Print",
-			                                                  Type.Void,
-			                                                  [Type.String]);
+			this.functionsState = FunctionsState.withNewFuncDef(this.functionsState,
+			                                                    "Print",
+			                                                    Type.Void,
+			                                                    [Type.String]);
 		}
 	}
 
 	static getStatement(state: RootState, id: number)
 	{
-		return StatementsState.getStatement(state.statementState, id);
+		return StatementsState.getStatement(state.statementsState, id);
 	}
 
 	static getFuncDef(state: RootState, id: number)
 	{
-		return FunctionState.getFuncDef(state.functionState, id);
+		return FunctionsState.getFuncDef(state.functionsState, id);
 	}
 
 	static getFuncCall(state: RootState, id: number)
 	{
-		return FunctionState.getFuncCall(state.functionState, id);
+		return FunctionsState.getFuncCall(state.functionsState, id);
 	}
 
 	static getAsPlainObject(state: RootState)
