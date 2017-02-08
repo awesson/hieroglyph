@@ -1,4 +1,5 @@
-import StatementList from './StatementList';
+import StatementListContainer, { IStatementViewProps, IStatementElement } from './StatementListContainer';
+import StatementListView from './StatementListView';
 import { StatementsState, StatementState } from './StatementState';
 import { StatementType } from './StatementTypes';
 import { AddStatementAction, createAddStatementAction, AnyStatementAction } from './StatementActions';
@@ -8,7 +9,10 @@ import * as Functions from './Functions';
 
 export
 {
-	StatementList,
+	IStatementViewProps,
+	IStatementElement,
+	StatementListContainer,
+	StatementListView,
 	StatementsState,
 	StatementState,
 	StatementType,

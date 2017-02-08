@@ -6,8 +6,8 @@ import * as Statements from './Statements';
 
 
 const independentReducers = combineReducers<RootState>({
-	statementState: Statements.reducer,
-	functionState: Functions.reducer
+	statementsState: Statements.reducer,
+	functionsState: Functions.reducer
 });
 
 type AllActions = Statements.AnyStatementAction | Functions.AnyFunctionAction;

@@ -131,6 +131,11 @@ class FunctionsState
 
 		return funcCall;
 	}
+
+	getNumFuncCalls()
+	{
+		return this.functionCalls.size;
+	}
 }
 
 export { FunctionsState, FunctionDefState, FunctionCallState };

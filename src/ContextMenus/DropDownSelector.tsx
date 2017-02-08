@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
 export interface IItemInfo
@@ -36,13 +37,17 @@ class DropDownSelector extends React.Component<IDropDownSelectorProps, {}>
 		{
 			const itemSelectionHandler = this.createSelectionHandler(info.id,
 			                                                         this.props.selectionCallback);
-			return <li key={info.id} onClick={itemSelectionHandler}>
+			return <DropdownItem key={info.id} onClick={itemSelectionHandler}>
 				       {info.displayText}
-			       </li>;
+			       </DropdownItem>;
 		}
 		const selectionItems = this.props.itemInfo.map(mapFunc);
 
-		return <ul>{selectionItems}</ul>;
+		return <Dropdown isOpen={true} toggle={() => {}}>
+			       <DropdownMenu right>
+		               {selectionItems}
+				   </DropdownMenu>
+			   </Dropdown>;
 	}
 }
 

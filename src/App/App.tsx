@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 
 import RootState from '../RootState';
-import { StatementList } from '../Statements';
+import { StatementListContainer } from '../Statements';
 import { StatementPicker } from '../ContextMenus';
 
 import './App.css';
@@ -68,9 +68,9 @@ class App extends Component<IAppProps, IAppState>
 
 		return (
 			<div className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
-				<StatementList rootState={this.props.rootState} statements={statements} />
-				{contextMenu}
 				<p className="App-intro">Right click to add statements!</p>
+				<StatementListContainer statements={statements} />
+				{contextMenu}
 			</div>
 		);
 	}

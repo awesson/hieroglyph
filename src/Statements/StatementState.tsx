@@ -1,5 +1,6 @@
 import { copyMapWithAddedEntry } from '../MapHelpers/MapHelpers';
 import { StatementType } from './StatementTypes';
+import { FunctionStatementContainer } from './Functions';
 
 
 export class StatementState
@@ -13,6 +14,16 @@ export class StatementState
 		this.myId = myId;
 		this.concreteStatementId = concreteStatementId;
 		this.type = type;
+	}
+
+	static getComponentContainer(state: StatementState)
+	{
+		switch(state.type)
+		{
+			default:
+			case StatementType.FunctionCall:
+				return FunctionStatementContainer;
+		}
 	}
 }
 

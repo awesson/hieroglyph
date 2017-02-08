@@ -8,6 +8,7 @@ function functionReducer(state = new FunctionsState(), action: AnyFunctionAction
 		case "AddFunctionCallAction":
 			return FunctionsState.withNewFunctionCall(state, action.funcDefId);
 		default:
+			//const _exhaustiveCheck: never = action;
 			return state;
 	}
 }

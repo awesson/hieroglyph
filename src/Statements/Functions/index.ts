@@ -2,6 +2,7 @@ import { FunctionsState, FunctionDefState, FunctionCallState } from './FunctionS
 import FunctionStatement from './FunctionStatement';
 import { createAddFunctionCallAction, AddFunctionCallAction, AnyFunctionAction } from './FunctionActions';
 import reducer from './FunctionReducers';
+import FunctionStatementContainer from './FunctionStatementContainer';
 
 export
 {
@@ -9,6 +10,7 @@ export
 	FunctionDefState,
 	FunctionCallState,
 	FunctionStatement,
+	FunctionStatementContainer,
 	createAddFunctionCallAction,
 	AddFunctionCallAction,
 	AnyFunctionAction,

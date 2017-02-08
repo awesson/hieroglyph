@@ -22,7 +22,7 @@ class StatementPicker extends React.Component<IStatementPickerProps, {}>
 
 	createSelectionHandler(dispatch: Dispatch<RootState>)
 	{
-		const addFuncCall = function (funcDefId: number, event: React.MouseEvent<HTMLLIElement>)
+		const addFuncCall = (funcDefId: number, event: React.MouseEvent<HTMLLIElement>) =>
 		{
 			dispatch(createAddFunctionCallAction(funcDefId));
 		}

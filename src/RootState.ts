@@ -1,7 +1,10 @@
-import { Type } from './Types';
-import { FunctionsState } from './Statements/Functions/FunctionState'
-import { StatementsState } from './Statements';
+import React from 'react';
 
+import { StatementType } from './Statements/StatementTypes';
+import { Type } from './Types';
+import { Functions, StatementsState, IStatementViewProps } from './Statements';
+import FunctionsState = Functions.FunctionsState;
+import FunctionStatementContainer = Functions.FunctionStatementContainer;
 
 class RootState
 {
@@ -22,6 +25,14 @@ class RootState
 			                                                    "Print",
 			                                                    Type.Void,
 			                                                    [Type.String]);
+			this.functionsState = FunctionsState.withNewFuncDef(this.functionsState,
+			                                                    "SquareRoot",
+			                                                    Type.Float,
+																[Type.Float]);
+			this.functionsState = FunctionsState.withNewFuncDef(this.functionsState,
+			                                                    "AbsoluteValue",
+			                                                    Type.Float,
+																[Type.Float]);
 		}
 	}
 
@@ -40,9 +51,17 @@ class RootState
 		return FunctionsState.getFuncCall(state.functionsState, id);
 	}
 
+	// TODO: Do I need this? Can I use this?
 	static getAsPlainObject(state: RootState)
 	{
 		return { ...state };
+	}
+
+	// TODO: Do these functions really need to be static? Even though I'm passing it as a plain object,
+	// it seems like I can still call instance methods on the state returned by redux.
+	getNumFuncCalls()
+	{
+		return this.functionsState.getNumFuncCalls();
 	}
 }
 
