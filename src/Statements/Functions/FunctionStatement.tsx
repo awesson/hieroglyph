@@ -16,8 +16,7 @@ class FunctionStatement extends React.Component<IFunctionStatementProps, {}>
 
 	render(): JSX.Element
 	{
-		let ele = <div className="boxed">{this.props.name}</div>;
-		return <li>{ele}</li>;
+		return <p><span className='boxed'>{this.props.name}</span></p>;
 	}
 }
 

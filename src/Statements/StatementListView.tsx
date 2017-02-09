@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import React, { Component } from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 
 import { StatementState } from './StatementState';
 import { IStatementElement } from './StatementListContainer';
@@ -19,11 +20,13 @@ class StatementListView extends Component<IStatementListViewProps, {}>
 		const toStatementsList = (eleInfo: IStatementElement) =>
 		{
 			const Ele = eleInfo.comp;
-			return <Ele key={eleInfo.viewProps.concreteStatementId} {...eleInfo.viewProps} />;
+			return <ListGroupItem key={eleInfo.viewProps.concreteStatementId}>
+				       <Ele  {...eleInfo.viewProps} />
+				   </ListGroupItem>;
 		}
 		const listItems = this.props.listItems.map(toStatementsList);
 
-		return <ul>{listItems}</ul>;
+		return <ListGroup style={{'listStyle': 'none'}}>{listItems}</ListGroup>;
 	}
 }
 
