@@ -1,5 +1,6 @@
-import * as React from "react";
-import { Dispatch } from "redux"
+import * as React from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
 import RootState from '../RootState';
 import { createAddFunctionCallAction } from '../Statements/Functions'
@@ -12,36 +13,32 @@ interface IStatementPickerProps
 	dispatch: Dispatch<RootState>;
 }
 
-class StatementPicker extends React.Component<IStatementPickerProps, {}>
+const mapStateToProps = (rootState: RootState) =>
 {
-	constructor(props: IStatementPickerProps)
+	// TODO: Should eventually be more than just function defs
+	// and should go through a selector instead of accessing the data directly.
+	let itemInfos: IItemInfo[] = [];
+	for (let [id, funcDef] of rootState.functionsState.functions)
 	{
-		super(props);
-		this.createSelectionHandler = this.createSelectionHandler.bind(this);
+		const info = { id: id, displayText: funcDef.name };
+		itemInfos.push(info);
 	}
-
-	createSelectionHandler(dispatch: Dispatch<RootState>)
-	{
-		const addFuncCall = (funcDefId: number, event: React.MouseEvent<HTMLLIElement>) =>
-		{
-			dispatch(createAddFunctionCallAction(funcDefId));
-		}
-		return addFuncCall;
-	}
-
-	public render(): JSX.Element
-	{
-		// TODO: Should eventually be more than just function defs
-		// and should go through a selector instead of accessing the data directly.
-		let items: IItemInfo[] = [];
-		for (let [id, funcDef] of this.props.rootState.functionsState.functions)
-		{
-			items.push({ id: id, displayText: funcDef.name });
-		}
-		return <DropDownSelector itemInfo={items}
-		                         // TODO: Should I be calling this.createSelectionHandler.bind(this.props.dispatch)?
-		                         selectionCallback={this.createSelectionHandler(this.props.dispatch)} />
-	}
+	return { itemInfos };
 }
 
-export default StatementPicker;
+const createSelectionHandler = (dispatch: Dispatch<RootState>) =>
+{
+	const addFuncCall = (id: number, event: React.MouseEvent<HTMLLIElement>) =>
+	{
+		dispatch(createAddFunctionCallAction(id));
+	}
+	return addFuncCall;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<RootState>) =>
+{
+	const selectionCallback = createSelectionHandler(dispatch);
+	return { selectionCallback }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DropDownSelector);

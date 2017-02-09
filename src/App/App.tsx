@@ -63,7 +63,7 @@ class App extends Component<IAppProps, IAppState>
 		let contextMenu = null;
 		if (this.state.displayStatementPicker)
 		{
-			contextMenu = <StatementPicker {...this.props} />
+			contextMenu = <StatementPicker />
 		}
 
 		return (

@@ -12,7 +12,7 @@ export type ItemSelectedCallback = (id: number, event: React.MouseEvent<HTMLLIEl
 
 interface IDropDownSelectorProps
 {
-	itemInfo: IItemInfo[];
+	itemInfos: IItemInfo[];
 	selectionCallback: ItemSelectedCallback;
 }
 
@@ -41,7 +41,7 @@ class DropDownSelector extends React.Component<IDropDownSelectorProps, {}>
 				       {info.displayText}
 			       </DropdownItem>;
 		}
-		const selectionItems = this.props.itemInfo.map(mapFunc);
+		const selectionItems = this.props.itemInfos.map(mapFunc);
 
 		return <Dropdown isOpen={true} toggle={() => {}}>
 			       <DropdownMenu right>
