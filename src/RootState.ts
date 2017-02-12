@@ -2,9 +2,8 @@ import React from 'react';
 
 import { StatementType } from './Statements/StatementTypes';
 import { Type } from './Types';
-import { Functions, StatementsState, IStatementViewProps } from './Statements';
+import { Functions, StatementsState } from './Statements';
 import FunctionsState = Functions.FunctionsState;
-import FunctionStatementContainer = Functions.FunctionStatementContainer;
 
 class RootState
 {

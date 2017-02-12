@@ -8,20 +8,26 @@ import { FunctionStatementContainer, FunctionCallState } from './Functions';
 import RootState from '../RootState';
 
 
+export type StatementSelectedCallback = (statementId: number, event: React.MouseEvent<any>) => void;
+
 interface IStatementListContainerProps
 {
 	statements: number[];
+	selectedStatementId: number;
+	selectedCallback: StatementSelectedCallback;
 }
 
-export interface IStatementViewProps
+export interface IStatementCompProps
 {
 	concreteStatementId: number;
+	isSelected: boolean;
+	selectedCallback: React.MouseEventHandler<any>;
 }
 
 export interface IStatementElement
 {
-	comp: React.ComponentClass<IStatementViewProps>;
-	viewProps: IStatementViewProps;
+	comp: React.ComponentClass<IStatementCompProps>;
+	viewProps: IStatementCompProps;
 }
 
 const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerProps) =>
@@ -29,9 +35,19 @@ const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerP
 	const statementToElement = (statementId: number) =>
 	{
 		console.log(rootState.getNumFuncCalls());
+
 		const statement = RootState.getStatement(rootState, statementId);
-		const jsxType = StatementState.getComponentContainer(statement);
-		return {comp: jsxType, viewProps: {concreteStatementId: statement.concreteStatementId}};
+		const comp = StatementState.getStatementContainerComponent(statement);
+
+		const concreteStatementId = statement.concreteStatementId;
+		const isSelected = (statementId == myProps.selectedStatementId);
+		const selectedCallback = (event: React.MouseEvent<any>) =>
+		{
+			myProps.selectedCallback(statementId, event);
+		}
+		const viewProps = { concreteStatementId, isSelected, selectedCallback };
+		
+		return { comp, viewProps };
 	}
 	const listItems:IStatementElement[] = myProps.statements.map(statementToElement);
 	return { listItems };

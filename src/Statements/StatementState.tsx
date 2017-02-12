@@ -1,6 +1,6 @@
 import { copyMapWithAddedEntry } from '../MapHelpers/MapHelpers';
 import { StatementType } from './StatementTypes';
-import { FunctionStatementContainer } from './Functions';
+import { FunctionStatementContainer, FunctionCallInspectorContainer } from './Functions';
 
 
 export class StatementState
@@ -16,13 +16,23 @@ export class StatementState
 		this.type = type;
 	}
 
-	static getComponentContainer(state: StatementState)
+	static getStatementContainerComponent(state: StatementState)
 	{
 		switch(state.type)
 		{
 			default:
 			case StatementType.FunctionCall:
 				return FunctionStatementContainer;
+		}
+	}
+
+	static getInspectorContainerComponent(state: StatementState)
+	{
+		switch(state.type)
+		{
+			default:
+			case StatementType.FunctionCall:
+				return FunctionCallInspectorContainer;
 		}
 	}
 }

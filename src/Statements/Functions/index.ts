@@ -3,6 +3,7 @@ import FunctionStatement from './FunctionStatement';
 import { createAddFunctionCallAction, AddFunctionCallAction, AnyFunctionAction } from './FunctionActions';
 import reducer from './FunctionReducers';
 import FunctionStatementContainer from './FunctionStatementContainer';
+import FunctionCallInspectorContainer from './FunctionCallInspectorContainer';
 
 export
 {
@@ -11,6 +12,7 @@ export
 	FunctionCallState,
 	FunctionStatement,
 	FunctionStatementContainer,
+	FunctionCallInspectorContainer,
 	createAddFunctionCallAction,
 	AddFunctionCallAction,
 	AnyFunctionAction,

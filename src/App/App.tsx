@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import RootState from '../RootState';
 import { StatementListContainer } from '../Statements';
 import { StatementPicker } from '../ContextMenus';
+import { InspectorContainer } from '../Editors/Inspectors';
 
 import './App.css';
 
@@ -18,6 +19,7 @@ interface IAppProps
 interface IAppState
 {
 	displayStatementPicker: boolean;
+	selectedStatementId: number;
 }
 
 const mapStateToProps = (rootState: RootState) =>
@@ -35,9 +37,10 @@ class App extends Component<IAppProps, IAppState>
 	constructor(props: IAppProps)
 	{
 		super(props);
-		this.state = { displayStatementPicker: false };
+		this.state = { displayStatementPicker: false, selectedStatementId: -1 };
 
 		this.handleClick = this.handleClick.bind(this);
+		this.onStatementSelected = this.onStatementSelected.bind(this);
 	}
 
 	// TODO: Eventually this should be in an editor UI and the App can have multiple Editor contexts
@@ -45,7 +48,21 @@ class App extends Component<IAppProps, IAppState>
 	{
 		event.preventDefault();
 		const wasRightClick = (event.button == 2);
-		this.setState({ displayStatementPicker: wasRightClick });
+		this.setState({ displayStatementPicker: wasRightClick } as IAppState);
+
+		if(!wasRightClick)
+		{
+			// TODO: How can I avoid calling this when something else was clicked as well??
+			console.log("clearing selected statement")
+			//this.setState({selectedStatementId: -1} as IAppState);
+		}
+	}
+
+	onStatementSelected(statementId: number, event: React.MouseEvent<any>)
+	{
+		console.log("statement was selected");
+		event.preventDefault();
+		this.setState({selectedStatementId: statementId} as IAppState);
 	}
 
 	render()
@@ -69,7 +86,10 @@ class App extends Component<IAppProps, IAppState>
 		return (
 			<div className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
 				<p className="App-intro">Right click to add statements!</p>
-				<StatementListContainer statements={statements} />
+				<StatementListContainer statements={statements}
+				                        selectedStatementId={this.state.selectedStatementId}
+				                        selectedCallback={this.onStatementSelected} />
+				<InspectorContainer statementId={this.state.selectedStatementId} />
 				{contextMenu}
 			</div>
 		);
