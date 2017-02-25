@@ -1,4 +1,4 @@
-import { Action, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 
 import RootState from './RootState';
 import { Functions } from './Statements';

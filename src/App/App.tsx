@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { Container, Row, Col } from 'reactstrap';
 
 import RootState from '../RootState';
 import { StatementListContainer } from '../Statements';
@@ -84,14 +85,20 @@ class App extends Component<IAppProps, IAppState>
 		}
 
 		return (
-			<div className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
-				<p className="App-intro">Right click to add statements!</p>
-				<StatementListContainer statements={statements}
-				                        selectedStatementId={this.state.selectedStatementId}
-				                        selectedCallback={this.onStatementSelected} />
-				<InspectorContainer statementId={this.state.selectedStatementId} />
-				{contextMenu}
-			</div>
+			<Container>
+				<Row>
+					<Col className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
+						<p className="App-intro">Right click to add statements!</p>
+						<StatementListContainer statements={statements}
+												selectedStatementId={this.state.selectedStatementId}
+												selectedCallback={this.onStatementSelected} />
+						{contextMenu}
+					</Col>
+					<Col className="Inspector">
+						<InspectorContainer statementId={this.state.selectedStatementId} />
+					</Col>
+				</Row>
+			</Container>
 		);
 	}
 }

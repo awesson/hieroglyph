@@ -1,5 +1,5 @@
 import { Type, mapToDefaultValues } from '../../Types';
-import { copyMapWithAddedEntry } from '../../MapHelpers/MapHelpers';
+import { copyMapWithAddedEntry } from '../../MapHelpers';
 
 class FunctionDefState
 {

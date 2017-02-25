@@ -34,8 +34,6 @@ const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerP
 {
 	const statementToElement = (statementId: number) =>
 	{
-		console.log(rootState.getNumFuncCalls());
-
 		const statement = RootState.getStatement(rootState, statementId);
 		const comp = StatementState.getStatementContainerComponent(statement);
 

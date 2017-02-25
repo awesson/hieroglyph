@@ -17,3 +17,10 @@
 	font-size: large;
 	color: black;
 }
+
+.Inspector {
+	width: 300px;
+	text-align: center;
+	border: 1px solid black;
+	background-color: #fafafa;
+}
