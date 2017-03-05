@@ -1,37 +1,41 @@
 import { combineReducers } from 'redux';
 
-import RootState from './RootState';
+import RootState, { newRootState } from './RootState';
+import { AllActions } from './RootActions';
 import { Functions } from './Statements';
 import * as Statements from './Statements';
+import getLastCreatedFuncCall = Functions.FunctionState.getLastCreatedFuncCall;
 
 
-const independentReducers = combineReducers<RootState>({
-	statementsState: Statements.reducer,
-	functionsState: Functions.reducer
-});
+function independentReducers(state : RootState, action: AllActions)
+{
+	return newRootState(Functions.reducer(state, action), Statements.reducer(state, action));
+}
 
-type AllActions = Statements.AnyStatementAction | Functions.AnyFunctionAction;
+function addFunctionCall(state : RootState, action: Functions.AddFunctionCallAction)
+{
+	let newFunctionState = Functions.reducer(state, action);
 
-function rootReducer(state = new RootState(), action: AllActions)
+	let newFuncCall = getLastCreatedFuncCall(newFunctionState);
+	if (!newFuncCall)
+	{
+		return state;
+	}
+
+	const statementType = Statements.StatementType.FunctionCall;
+	let derivedAction = Statements.createAddStatementAction(newFuncCall.myId,
+	                                                        statementType);
+	let newStatementState = Statements.reducer(state, derivedAction);
+
+	return newRootState(newFunctionState, newStatementState);
+}
+
+function rootReducer(state : RootState = newRootState(), action: AllActions)
 {
 	switch (action.type)
 	{
 		case "AddFunctionCallAction":
-			let newFunctionState = Functions.reducer(state.functionsState, action);
-
-			let newFuncCall = Functions.FunctionsState.getLastCreatedFuncCall(newFunctionState);
-			if (!newFuncCall)
-			{
-				return state;
-			}
-
-			const statementType = Statements.StatementType.FunctionCall;
-			let derivedAction = Statements.createAddStatementAction(newFuncCall.myId,
-			                                                        statementType);
-			let newStatementState = Statements.reducer(state.statementsState, derivedAction);
-
-			return new RootState(newStatementState, newFunctionState);
-
+			return addFunctionCall(state, action);
 		default:
 			return independentReducers(state, action);
 	}

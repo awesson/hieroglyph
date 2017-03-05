@@ -9,7 +9,7 @@ function copyMapWithUpdatedValue<T, U>(originalMap: Map<T, U>, key: T, newValue:
 	newMap.set(key, newValue);
 	for (let entry of originalMap.entries())
 	{
-		if(entry[0] != key)
+		if (entry[0] != key)
 		{
 			newMap.set(entry[0], entry[1]);
 		}

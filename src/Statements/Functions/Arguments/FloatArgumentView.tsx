@@ -39,7 +39,7 @@ class FloatArgumentView extends React.Component<IFloatArgumentViewProps, IFloatA
 			this.setState({inputIsValid: isValidNum});
 
 			// Don't notify parent unless the input is a valid number
-			if(isValidNum)
+			if (isValidNum)
 			{
 				return defaultOnChangeCallback(newValue);
 			}
@@ -52,7 +52,7 @@ class FloatArgumentView extends React.Component<IFloatArgumentViewProps, IFloatA
 
 		let errorMsg = null;
 		let inputField;
-		if(this.state.inputIsValid)
+		if (this.state.inputIsValid)
 		{
 			inputField = <Input value={this.props.curValue} onChange={onChange} />
 		}

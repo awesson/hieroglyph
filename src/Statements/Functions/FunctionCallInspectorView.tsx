@@ -48,7 +48,8 @@ class FunctionCallInspectorView extends React.Component<IFunctionCallInspectorVi
 	{
 		const args = this.props.funcDef.argumentTypes.map(this.mapArgumentTypesToInputElements);
 
-		return <div className="boxed">
+		return <div>
+		           <p>Inspecting: <b>{this.props.funcDef.name}</b></p>
 			       {args}
 		       </div>;
 	}

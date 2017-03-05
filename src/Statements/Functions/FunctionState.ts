@@ -1,7 +1,8 @@
 import { Type, mapToDefaultValues } from '../../Types';
 import { copyMapWithAddedEntry } from '../../MapHelpers';
 
-class FunctionDefState
+
+export interface FunctionDefState
 {
 	readonly myId: number;
 	readonly name: string;
@@ -9,133 +10,139 @@ class FunctionDefState
 	readonly argumentTypes: Type[];
 	readonly statements: number[];
 	readonly isBuiltin: boolean;
-
-	constructor(myId: number,
-	            name: string = "unnamed",
-	            returnType: Type = Type.Void,
-	            argumentTypes: Type[] = null,
-	            isBuiltin: boolean = true)
-	{
-		this.myId = myId;
-		this.name = name;
-		this.returnType = returnType;
-		this.argumentTypes = argumentTypes;
-		this.isBuiltin = isBuiltin;
-		this.statements = null;
-	}
-
-	static getDefaultArguments(state: FunctionDefState)
-	{
-		return mapToDefaultValues(state.argumentTypes);
-	}
 }
 
-class FunctionCallState
+export function newFunctionDefState(myId: number,
+                                    name: string = "unnamed",
+                                    returnType: Type = Type.Void,
+                                    argumentTypes: Type[] = null,
+                                    isBuiltin: boolean = true,
+                                    statements: number[] = null) : FunctionDefState
+{
+	return { myId, name, returnType, argumentTypes, statements, isBuiltin };
+}
+
+export function getDefaultArguments(state: FunctionDefState)
+{
+	return mapToDefaultValues(state.argumentTypes);
+}
+
+
+export interface FunctionCallState
 {
 	readonly myId: number;
 	readonly funcDefId: number;
 	// For now the user will be inputing argument types through a text field.
 	// This works for outputting to a .cs file just fine.
 	readonly passedArguments: string[];
-
-	constructor(myId: number = -1, funcDefId: number = -1, passedArguments: string[] = null)
-	{
-		this.myId = myId;
-		this.funcDefId = funcDefId;
-		this.passedArguments = passedArguments;
-	}
-
-	static setArgument(state: FunctionCallState, index: number, value: string)
-	{
-		let newArguments = [...state.passedArguments.slice(0, index),
-		                    value,
-		                    ...state.passedArguments.slice(index + 1)];
-		return new FunctionCallState(state.myId, state.funcDefId, newArguments);
-	}
 }
 
-class FunctionsState
+export function newFunctionCallState(myId: number = -1, funcDefId: number = -1, passedArguments: string[] = null)
 {
-	functions: Map<number, FunctionDefState>;
-	nextFunctionID: number;
-	functionCalls: Map<number, FunctionCallState>;
-	nextFunctionCallID: number;
-
-	constructor(functions: Map<number, FunctionDefState> = new Map<number, FunctionDefState>(),
-	            nextFunctionID: number = 0,
-	            functionCalls: Map<number, FunctionCallState> = new Map<number, FunctionCallState>(),
-	            nextFunctionCallID: number = 0)
-	{
-		this.functions = functions;
-		this.nextFunctionID = nextFunctionID;
-		this.functionCalls = functionCalls;
-		this.nextFunctionCallID = nextFunctionCallID;
-	}
-
-	static withNewFunctionCall(state: FunctionsState, sourceFuncDefId: number): FunctionsState
-	{
-		const funcDef = FunctionsState.getFuncDef(state, sourceFuncDefId);
-		const defaultArgs = FunctionDefState.getDefaultArguments(funcDef);
-		const newFuncCall = new FunctionCallState(state.nextFunctionCallID,
-		                                          sourceFuncDefId,
-		                                          defaultArgs);
-		const newFuncCallMap = copyMapWithAddedEntry(state.functionCalls,
-		                                             state.nextFunctionCallID,
-		                                             newFuncCall);
-		return new FunctionsState(state.functions,
-		                          state.nextFunctionID,
-		                          newFuncCallMap,
-		                          state.nextFunctionCallID + 1);
-	}
-
-	static withNewFuncDef(state: FunctionsState,
-	                      name: string = "unnamed",
-	                      returnType: Type = Type.Void,
-	                      argumentTypes: Type[] = null,
-	                      isBuiltin: boolean = true)
-	{
-		const newFuncDef = new FunctionDefState(state.nextFunctionID,
-		                                        name,
-		                                        returnType,
-		                                        argumentTypes,
-		                                        isBuiltin);
-		const newFuncDefMap = copyMapWithAddedEntry(state.functions,
-		                                            state.nextFunctionID,
-		                                            newFuncDef);
-		return new FunctionsState(newFuncDefMap,
-		                          state.nextFunctionID + 1,
-		                          state.functionCalls,
-		                          state.nextFunctionCallID);
-	}
-
-	static getFuncDef(state: FunctionsState, id: number)
-	{
-		return state.functions.get(id);
-	}
-
-	static getFuncCall(state: FunctionsState, id: number)
-	{
-		return state.functionCalls.get(id);
-	}
-
-	static getLastCreatedFuncCall(state: FunctionsState)
-	{
-		let lastFuncCallId = state.nextFunctionCallID;
-		let funcCall: FunctionCallState;
-
-		while (!funcCall && lastFuncCallId > 0)
-		{
-			--lastFuncCallId;
-			funcCall = FunctionsState.getFuncCall(state, lastFuncCallId);
-		}
-
-		return funcCall;
-	}
-
-	getNumFuncCalls()
-	{
-		return this.functionCalls.size;
-	}
+	return { myId, funcDefId, passedArguments };
 }
 
-export { FunctionsState, FunctionDefState, FunctionCallState };
+export function setArgument(state: FunctionCallState, index: number, value: string)
+{
+	let newArguments = [...state.passedArguments.slice(0, index),
+	                    value,
+	                    ...state.passedArguments.slice(index + 1)];
+	return newFunctionCallState(state.myId, state.funcDefId, newArguments);
+}
+
+
+export interface FunctionsState
+{
+	readonly functions: Map<number, FunctionDefState>;
+	readonly nextFunctionId: number;
+	readonly functionCalls: Map<number, FunctionCallState>;
+	readonly nextFunctionCallId: number;
+}
+
+export function newFunctionsState(functions: Map<number, FunctionDefState> = new Map<number, FunctionDefState>(),
+                                  nextFunctionId: number = 0,
+                                  functionCalls: Map<number, FunctionCallState> = new Map<number, FunctionCallState>(),
+                                  nextFunctionCallId: number = 0)
+{
+	return { functions, nextFunctionId, functionCalls, nextFunctionCallId };
+}
+
+export function getFunctionsState(state: FunctionsState)
+{
+	return newFunctionsState(state.functions, state.nextFunctionId, state.functionCalls, state.nextFunctionCallId);
+}
+
+export function withNewFunctionCall(state: FunctionsState, sourceFuncDefId: number): FunctionsState
+{
+	const funcDef = getFuncDef(state, sourceFuncDefId);
+	const defaultArgs = getDefaultArguments(funcDef);
+	const newFuncCall = newFunctionCallState(state.nextFunctionCallId,
+	                                         sourceFuncDefId,
+	                                         defaultArgs);
+	const newFuncCallMap = copyMapWithAddedEntry(state.functionCalls,
+	                                             state.nextFunctionCallId,
+	                                             newFuncCall);
+	return newFunctionsState(state.functions,
+	                         state.nextFunctionId,
+	                         newFuncCallMap,
+	                         state.nextFunctionCallId + 1);
+}
+
+export function withNewFuncDef(state: FunctionsState,
+                               name: string = "unnamed",
+                               returnType: Type = Type.Void,
+                               argumentTypes: Type[] = null,
+                               isBuiltin: boolean = true)
+{
+	const newFuncDef = newFunctionDefState(state.nextFunctionId,
+	                                       name,
+	                                       returnType,
+	                                       argumentTypes,
+	                                       isBuiltin);
+	const newFuncDefMap = copyMapWithAddedEntry(state.functions,
+	                                            state.nextFunctionId,
+	                                            newFuncDef);
+	return newFunctionsState(newFuncDefMap,
+	                         state.nextFunctionId + 1,
+	                         state.functionCalls,
+	                         state.nextFunctionCallId);
+}
+
+export function getFuncDef(state: FunctionsState, id: number)
+{
+	return state.functions.get(id);
+}
+
+export function getAllFuncDefs(state: FunctionsState)
+{
+	return state.functions;
+}
+
+export function getFuncCall(state: FunctionsState, id: number)
+{
+	return state.functionCalls.get(id);
+}
+
+export function getAllFuncCalls(state: FunctionsState)
+{
+	return state.functionCalls;
+}
+
+export function getLastCreatedFuncCall(state: FunctionsState)
+{
+	let lastFuncCallId = state.nextFunctionCallId;
+	let funcCall: FunctionCallState;
+
+	while (!funcCall && lastFuncCallId > 0)
+	{
+		--lastFuncCallId;
+		funcCall = getFuncCall(state, lastFuncCallId);
+	}
+
+	return funcCall;
+}
+
+export function getNumFuncCalls()
+{
+	return this.functionCalls.size;
+}

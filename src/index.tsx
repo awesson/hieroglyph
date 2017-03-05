@@ -4,14 +4,14 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import RootState from './RootState';
+import { initRootState } from './RootState';
 import rootReducer from './RootReducer';
 
 import App from './App';
 
 const castWindow = window as any;
 const store = createStore(rootReducer,
-                          RootState.getAsPlainObject(new RootState()),
+                          initRootState(),
 						  // Needed for the redux firefox plugin to work
                           castWindow.devToolsExtension && castWindow.devToolsExtension());
 

@@ -3,7 +3,8 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
 import RootState from '../RootState';
-import { createAddFunctionCallAction } from '../Statements/Functions'
+import { createAddFunctionCallAction, FunctionState } from '../Statements/Functions'
+import getAllFuncDefs = FunctionState.getAllFuncDefs;
 import DropDownSelector, { IItemInfo } from './DropDownSelector'
 
 
@@ -15,10 +16,9 @@ interface IStatementPickerProps
 
 const mapStateToProps = (rootState: RootState) =>
 {
-	// TODO: Should eventually be more than just function defs
-	// and should go through a selector instead of accessing the data directly.
+	// TODO: Should eventually be more than just function defs.
 	let itemInfos: IItemInfo[] = [];
-	for (let [id, funcDef] of rootState.functionsState.functions)
+	for (let [id, funcDef] of getAllFuncDefs(rootState))
 	{
 		const info = { id: id, displayText: funcDef.name };
 		itemInfos.push(info);

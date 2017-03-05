@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { Container, Row, Col } from 'reactstrap';
 
 import RootState from '../RootState';
-import { StatementListContainer } from '../Statements';
+import { StatementListContainer, StatementState } from '../Statements';
+import getAllStatements = StatementState.getAllStatements;
 import { StatementPicker } from '../ContextMenus';
 import { InspectorContainer } from '../Editors/Inspectors';
 
@@ -51,17 +52,15 @@ class App extends Component<IAppProps, IAppState>
 		const wasRightClick = (event.button == 2);
 		this.setState({ displayStatementPicker: wasRightClick } as IAppState);
 
-		if(!wasRightClick)
+		if (!wasRightClick)
 		{
 			// TODO: How can I avoid calling this when something else was clicked as well??
-			console.log("clearing selected statement")
 			//this.setState({selectedStatementId: -1} as IAppState);
 		}
 	}
 
 	onStatementSelected(statementId: number, event: React.MouseEvent<any>)
 	{
-		console.log("statement was selected");
 		event.preventDefault();
 		this.setState({selectedStatementId: statementId} as IAppState);
 	}
@@ -73,7 +72,7 @@ class App extends Component<IAppProps, IAppState>
 		// a function def or potentially a type with a set of statements and this statement list
 		// would only have those statements.
 		let statements: number[] = [];
-		for (const [id, statement] of this.props.rootState.statementsState.statements)
+		for (const [id, statement] of getAllStatements(this.props.rootState))
 		{
 			statements.push(id);
 		}

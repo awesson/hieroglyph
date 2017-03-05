@@ -1,18 +1,21 @@
-import { StatementType } from './StatementTypes';
 import { combineReducers, Action } from 'redux';
-import { StatementsState, StatementState } from './StatementState';
-import { AnyStatementAction } from './StatementActions';
 
-function statementReducer(state = new StatementsState(), action: AnyStatementAction)
+import { AllActions } from '../RootActions';
+import { StatementsState, withNewStatement, newStatementsState, copyStatementsState } from './StatementState';
+import { StatementType } from './StatementTypes';
+
+
+function statementReducer(state : StatementsState = newStatementsState(), action: AllActions)
 {
 	switch (action.type)
 	{
 		case "AddStatementAction":
-			return StatementsState.withNewStatement(state,
-			                                        action.concreteStatementId,
-			                                        action.statementType);
+			return withNewStatement(state,
+			                        action.concreteStatementId,
+			                        action.statementType);
 		default:
-			return state;
+			// Need to make a new copy since the state passed in may be more than just a StatementsState.
+			return copyStatementsState(state);
 	}
 }
 

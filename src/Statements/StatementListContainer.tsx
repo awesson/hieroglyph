@@ -2,9 +2,8 @@ import { Dispatch } from 'redux';
 import React from 'react';
 import { connect } from "react-redux";
 
-import { StatementState } from './StatementState';
+import { getStatementContainerComponent, getStatement } from './StatementState';
 import StatementListView from './StatementListView';
-import { FunctionStatementContainer, FunctionCallState } from './Functions';
 import RootState from '../RootState';
 
 
@@ -34,8 +33,8 @@ const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerP
 {
 	const statementToElement = (statementId: number) =>
 	{
-		const statement = RootState.getStatement(rootState, statementId);
-		const comp = StatementState.getStatementContainerComponent(statement);
+		const statement = getStatement(rootState, statementId);
+		const comp = getStatementContainerComponent(statement);
 
 		const concreteStatementId = statement.concreteStatementId;
 		const isSelected = (statementId == myProps.selectedStatementId);

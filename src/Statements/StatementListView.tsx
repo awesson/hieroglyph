@@ -1,11 +1,7 @@
-import { Dispatch } from 'redux';
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-import { StatementState } from './StatementState';
 import { IStatementElement } from './StatementListContainer';
-import { FunctionStatement, FunctionCallState } from './Functions';
-import RootState from '../RootState';
 
 
 interface IStatementListViewProps

@@ -1,14 +1,24 @@
 import { combineReducers } from 'redux';
 
 import RootState from '../../RootState';
-import { FunctionsState, FunctionCallState, FunctionDefState } from './FunctionState';
+import { AllActions } from '../../RootActions';
+import
+{
+	newFunctionsState,
+	withNewFunctionCall,
+	FunctionCallState,
+	setArgument,
+	FunctionDefState,
+	FunctionsState,
+	getFunctionsState
+} from './FunctionState';
 import { AnyFunctionAction, AnyFunctionCallAction, AnyFunctionDefAction } from './FunctionActions';
 import { copyMapWithUpdatedValue } from '../../MapHelpers';
 
 
-const identityReducer = (defaultValue: any) =>
+function identityReducer<T>(defaultValue: T)
 {
-	return (state = defaultValue, action: any) =>
+	return (state: T = defaultValue, action: AllActions) =>
 	{
 		return state;
 	}
@@ -16,21 +26,20 @@ const identityReducer = (defaultValue: any) =>
 
 const reduceChildren = combineReducers<FunctionsState>({
 	functions: functionDefReducer,
-	nextFunctionID: identityReducer(0),
+	nextFunctionId: identityReducer(0),
 	functionCalls: functionCallReducer,
-	nextFunctionCallID: identityReducer(0)
+	nextFunctionCallId: identityReducer(0)
 });
 
-function functionReducer(state = new FunctionsState(), action: AnyFunctionAction)
+function functionReducer(state : FunctionsState = newFunctionsState(), action: AllActions)
 {
 	switch (action.type)
 	{
 		case "AddFunctionCallAction":
-			return FunctionsState.withNewFunctionCall(state, action.funcDefId);
+			return withNewFunctionCall(state, action.funcDefId);
 		default:
-			//const _exhaustiveCheck: never = action;
 			// TODO: Do I need to add identity functions for the indices members?
-			return reduceChildren(state, action);
+			return reduceChildren(getFunctionsState(state), action);
 	}
 }
 
@@ -41,12 +50,11 @@ function functionCallReducer(state = new Map<number, FunctionCallState>(), actio
 	switch (action.type)
 	{
 		case "SetFunctionCallArgumentAction":
-			const newFuncCallState = FunctionCallState.setArgument(funcCallState,
-			                                                       action.argIndex,
-			                                                       action.argValue);
+			const newFuncCallState = setArgument(funcCallState,
+			                                     action.argIndex,
+			                                     action.argValue);
 			return copyMapWithUpdatedValue(state, action.funcCallId, newFuncCallState);
 		default:
-			//const _exhaustiveCheck: never = action;
 			return state;
 	}
 }
@@ -56,7 +64,6 @@ function functionDefReducer(state = new Map<number, FunctionDefState>(), action:
 	switch (action.type)
 	{
 		default:
-			//const _exhaustiveCheck: never = action;
 			return state;
 	}
 }

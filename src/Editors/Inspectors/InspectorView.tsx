@@ -18,7 +18,7 @@ class InspectorView extends React.Component<IInspectorViewProps, {}>
 	public render(): JSX.Element
  	{
 		// Check if there isn't A statement selected
-		if(this.props.viewProps.concreteStatementId < 0)
+		if (this.props.viewProps.concreteStatementId < 0)
 		{
 			return <span>Select a statement to inspect</span>;
 		}

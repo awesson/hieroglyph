@@ -1,4 +1,4 @@
-import { FunctionsState, FunctionDefState, FunctionCallState } from './FunctionState';
+import * as FunctionState from './FunctionState';
 import FunctionStatement from './FunctionStatement';
 import
 {
@@ -15,9 +15,7 @@ import FunctionCallInspectorContainer from './FunctionCallInspectorContainer';
 
 export
 {
-	FunctionsState,
-	FunctionDefState,
-	FunctionCallState,
+	FunctionState,
 	FunctionStatement,
 	FunctionStatementContainer,
 	FunctionCallInspectorContainer,
