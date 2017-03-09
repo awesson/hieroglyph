@@ -1,18 +1,12 @@
 import * as React from "react";
 import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
-import { OnArgValueChangeCallback } from './ArgumentInputView';
+import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
 
-interface IStringArgumentViewProps
+class StringArgumentView extends React.Component<IArgumentInputElementProps, {}>
 {
-	curValue: string;
-	onChange: OnArgValueChangeCallback;
-}
-
-class StringArgumentView extends React.Component<IStringArgumentViewProps, {}>
-{
-	constructor(props: IStringArgumentViewProps)
+	constructor(props: IArgumentInputElementProps)
 	{
 		super(props);
 
@@ -29,7 +23,7 @@ class StringArgumentView extends React.Component<IStringArgumentViewProps, {}>
 
 	render(): JSX.Element
 	{
-		return <Input value={this.props.curValue} onChange={this.handleOnChange(this.props.onChange)} />
+		return <Input value={this.props.curValue} onChange={this.handleOnChange(this.props.onArgSetCallback)} />
 	}
 }
 

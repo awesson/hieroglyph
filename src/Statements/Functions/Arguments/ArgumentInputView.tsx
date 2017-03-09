@@ -8,32 +8,38 @@ import StringArgumentView from './StringArgumentView';
 
 export type OnArgValueChangeCallback = (newValue: string) => void;
 
-interface IArgumentInputElementProps
+export interface IArgumentInputElementProps
 {
-	argType: Type;
 	curValue: string;
 	onArgSetCallback: OnArgValueChangeCallback;
 }
 
-// TODO: Make this an actual component with a child component per type that has state that can handle input
-const ArgumentInputElement = (props: IArgumentInputElementProps) =>
+interface IArgumentInputViewProps extends IArgumentInputElementProps
 {
-	let InputElement = null;
+	argType: Type;
+}
 
-	switch(props.argType)
+// TODO: Make this an actual component with a child component per type that has state that can handle input
+const ArgumentInputElement = (props: IArgumentInputViewProps) =>
+{
+	let InputElement: React.ComponentClass<IArgumentInputElementProps> = StringArgumentView;
+
+	switch (props.argType)
 	{
 		case Type.Boolean:
 			InputElement = BooleanArgumentView;
+			break;
 		case Type.Float:
 			InputElement = FloatArgumentView;
+			break;
 		case Type.Void:
-			InputElement = null;
 		case Type.String:
 		default:
 			InputElement = StringArgumentView;
+			break;
 	}
 
-	return <InputElement curValue={props.curValue} onChange={props.onArgSetCallback}/>;
+	return <InputElement curValue={props.curValue} onArgSetCallback={props.onArgSetCallback}/>;
 }
 
 export default ArgumentInputElement;

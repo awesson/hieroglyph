@@ -1,18 +1,12 @@
 import * as React from "react";
 import { Input } from 'reactstrap';
 
-import { OnArgValueChangeCallback } from './ArgumentInputView';
+import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
 
-interface IBooleanArgumentViewProps
+class BooleanArgumentView extends React.Component<IArgumentInputElementProps, {}>
 {
-	curValue: string;
-	onChange: OnArgValueChangeCallback;
-};
-
-class BooleanArgumentView extends React.Component<IBooleanArgumentViewProps, {}>
-{
-	constructor(props: IBooleanArgumentViewProps)
+	constructor(props: IArgumentInputElementProps)
 	{
 		super(props);
 
@@ -29,7 +23,7 @@ class BooleanArgumentView extends React.Component<IBooleanArgumentViewProps, {}>
 
 	render(): JSX.Element
 	{
-		const onChange = this.handleOnChange(this.props.onChange);
+		const onChange = this.handleOnChange(this.props.onArgSetCallback);
 		return <Input type="select" value={this.props.curValue} onChange={onChange}>
                    <option>True</option>
                    <option>False</option>

@@ -37,8 +37,7 @@ class FunctionCallInspectorView extends React.Component<IFunctionCallInspectorVi
 		const onArgSetCallback = this.createArgSetCallback(this.props.setArgValue,
 		                                                   this.props.funcCall.myId,
 		                                                   index);
-		// TODO: Pass current argument value? Pass/derive default?
-		return <ArgumentInputView key={index}
+		return <ArgumentInputView key={this.props.funcCall.myId + "_" + index}
 		                          argType={argType}
 		                          curValue={this.props.funcCall.passedArguments[index]}
 		                          onArgSetCallback={onArgSetCallback} />;

@@ -1,33 +1,31 @@
 import * as React from "react";
 import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
-import { OnArgValueChangeCallback } from './ArgumentInputView';
+import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
 
-interface IFloatArgumentViewProps
+function isNumeric(num: any)
 {
-	curValue: string;
-	onChange: OnArgValueChangeCallback;
+	const numAsFloat = parseFloat(num);
+	const numIsNaN = Number.isNaN(numAsFloat);
+	const numIsFinite = Number.isFinite(numAsFloat);
+	return !numIsNaN && numIsFinite;
 }
 
 interface IFloatArgumentViewState
 {
+	currentFormInput: string;
 	inputIsValid: boolean;
 }
 
-class FloatArgumentView extends React.Component<IFloatArgumentViewProps, IFloatArgumentViewState>
+class FloatArgumentView extends React.Component<IArgumentInputElementProps, IFloatArgumentViewState>
 {
-	constructor(props: IFloatArgumentViewProps)
+	constructor(props: IArgumentInputElementProps)
 	{
 		super(props);
-		this.state = { inputIsValid: false };
+		this.state = { inputIsValid: isNumeric(this.props.curValue), currentFormInput: this.props.curValue };
 
 		this.createOnChangeHandler = this.createOnChangeHandler.bind(this);
-	}
-
-	private isNumeric(num: any)
-	{
-  		return !Number.isNaN(parseFloat(num)) && Number.isFinite(num);
 	}
 
 	createOnChangeHandler(defaultOnChangeCallback: OnArgValueChangeCallback)
@@ -35,20 +33,24 @@ class FloatArgumentView extends React.Component<IFloatArgumentViewProps, IFloatA
 		return (event: React.FormEvent<HTMLInputElement>) =>
 		{
 			const newValue = event.currentTarget.value;
-			const isValidNum = this.isNumeric(newValue);
-			this.setState({inputIsValid: isValidNum});
+			const isValidNum = isNumeric(newValue);
+			this.setState({ inputIsValid: isValidNum } as IFloatArgumentViewState);
 
 			// Don't notify parent unless the input is a valid number
 			if (isValidNum)
 			{
-				return defaultOnChangeCallback(newValue);
+				defaultOnChangeCallback(newValue);
+			}
+			else
+			{
+				this.setState({ currentFormInput: newValue } as IFloatArgumentViewState);
 			}
 		};
 	}
 
 	render(): JSX.Element
 	{
-		const onChange = this.createOnChangeHandler(this.props.onChange);
+		const onChange = this.createOnChangeHandler(this.props.onArgSetCallback);
 
 		let errorMsg = null;
 		let inputField;
@@ -58,7 +60,7 @@ class FloatArgumentView extends React.Component<IFloatArgumentViewProps, IFloatA
 		}
 		else
 		{
-			inputField = <Input onChange={onChange} />
+			inputField = <Input value={this.state.currentFormInput} onChange={onChange} />
 			errorMsg = <InputGroupAddon>Must be a floating point number</InputGroupAddon>;
 		}
 
