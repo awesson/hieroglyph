@@ -1,5 +1,5 @@
 import { Type, mapToDefaultValues } from '../../Types';
-import { copyMapWithAddedEntry } from '../../MapHelpers';
+import { INumberMap, newMapWithEntry } from '../../ObjectMaps';
 
 
 export interface FunctionDefState
@@ -37,7 +37,9 @@ export interface FunctionCallState
 	readonly passedArguments: string[];
 }
 
-export function newFunctionCallState(myId: number = -1, funcDefId: number = -1, passedArguments: string[] = null)
+export function newFunctionCallState(myId: number = -1,
+                                     funcDefId: number = -1,
+                                     passedArguments: string[] = null) : FunctionCallState
 {
 	return { myId, funcDefId, passedArguments };
 }
@@ -50,19 +52,22 @@ export function setArgument(state: FunctionCallState, index: number, value: stri
 	return newFunctionCallState(state.myId, state.funcDefId, newArguments);
 }
 
+export type FunctionDefMap = INumberMap<FunctionDefState>;
+
+export type FunctionCallMap = INumberMap<FunctionCallState>;
 
 export interface FunctionsState
 {
-	readonly functions: Map<number, FunctionDefState>;
+	readonly functions: FunctionDefMap;
 	readonly nextFunctionId: number;
-	readonly functionCalls: Map<number, FunctionCallState>;
+	readonly functionCalls: FunctionCallMap;
 	readonly nextFunctionCallId: number;
 }
 
-export function newFunctionsState(functions: Map<number, FunctionDefState> = new Map<number, FunctionDefState>(),
+export function newFunctionsState(functions: FunctionDefMap = {},
                                   nextFunctionId: number = 0,
-                                  functionCalls: Map<number, FunctionCallState> = new Map<number, FunctionCallState>(),
-                                  nextFunctionCallId: number = 0)
+                                  functionCalls: FunctionCallMap = {},
+                                  nextFunctionCallId: number = 0) : FunctionsState
 {
 	return { functions, nextFunctionId, functionCalls, nextFunctionCallId };
 }
@@ -79,9 +84,7 @@ export function withNewFunctionCall(state: FunctionsState, sourceFuncDefId: numb
 	const newFuncCall = newFunctionCallState(state.nextFunctionCallId,
 	                                         sourceFuncDefId,
 	                                         defaultArgs);
-	const newFuncCallMap = copyMapWithAddedEntry(state.functionCalls,
-	                                             state.nextFunctionCallId,
-	                                             newFuncCall);
+	const newFuncCallMap = newMapWithEntry(state.functionCalls, state.nextFunctionCallId, newFuncCall);
 	return newFunctionsState(state.functions,
 	                         state.nextFunctionId,
 	                         newFuncCallMap,
@@ -99,9 +102,7 @@ export function withNewFuncDef(state: FunctionsState,
 	                                       returnType,
 	                                       argumentTypes,
 	                                       isBuiltin);
-	const newFuncDefMap = copyMapWithAddedEntry(state.functions,
-	                                            state.nextFunctionId,
-	                                            newFuncDef);
+	const newFuncDefMap = newMapWithEntry(state.functions, state.nextFunctionId, newFuncDef);
 	return newFunctionsState(newFuncDefMap,
 	                         state.nextFunctionId + 1,
 	                         state.functionCalls,
@@ -110,7 +111,7 @@ export function withNewFuncDef(state: FunctionsState,
 
 export function getFuncDef(state: FunctionsState, id: number)
 {
-	return state.functions.get(id);
+	return state.functions[id];
 }
 
 export function getAllFuncDefs(state: FunctionsState)
@@ -120,7 +121,7 @@ export function getAllFuncDefs(state: FunctionsState)
 
 export function getFuncCall(state: FunctionsState, id: number)
 {
-	return state.functionCalls.get(id);
+	return state.functionCalls[id];
 }
 
 export function getAllFuncCalls(state: FunctionsState)

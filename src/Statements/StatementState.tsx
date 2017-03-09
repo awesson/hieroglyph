@@ -1,4 +1,4 @@
-import { copyMapWithAddedEntry } from '../MapHelpers/MapHelpers';
+import { INumberMap, newMapWithEntry } from '../ObjectMaps';
 import { StatementType } from './StatementTypes';
 import { FunctionStatementContainer, FunctionCallInspectorContainer } from './Functions';
 
@@ -38,16 +38,18 @@ function getInspectorContainerComponent(state: StatementState)
 }
 
 
+type StatementMap = INumberMap<StatementState>;
+
 interface StatementsState
 {
-	readonly statements: Map<number, StatementState>;
+	readonly statements: StatementMap;
 	readonly nextStatementId: number;
 }
 
-function newStatementsState(statements: Map<number, StatementState> = new Map<number, StatementState>(),
+function newStatementsState(statements: StatementMap = {},
                             nextStatementId: number = 0) : StatementsState
 {
-	return { statements, nextStatementId }
+	return { statements, nextStatementId };
 }
 
 // Can be used to copy StatementsState or to extract just the StatementsState fields from an object
@@ -57,15 +59,15 @@ function copyStatementsState(state: StatementsState)
 }
 
 function withNewStatement(state: StatementsState,
-                                 concreteStatementId: number,
-                                 statementType: StatementType) : StatementsState
+                          concreteStatementId: number,
+                          statementType: StatementType) : StatementsState
 {
 	let newStatement = newStatementState(state.nextStatementId,
                                          concreteStatementId,
                                          statementType);
-	const newStatements = copyMapWithAddedEntry(state.statements,
-                                                state.nextStatementId,
-                                                newStatement);
+	const newStatements = newMapWithEntry(state.statements,
+                                          state.nextStatementId,
+                                          newStatement);
 	return newStatementsState(newStatements, state.nextStatementId + 1);
 }
 
@@ -76,7 +78,7 @@ function getAllStatements(state: StatementsState)
 
 function getStatement(state: StatementsState, statementId: number)
 {
-	return state.statements.get(statementId);
+	return state.statements[statementId];
 }
 
 

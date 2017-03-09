@@ -9,11 +9,13 @@ import
 	FunctionCallState,
 	setArgument,
 	FunctionDefState,
+	FunctionCallMap,
+	FunctionDefMap,
 	FunctionsState,
 	getFunctionsState
 } from './FunctionState';
 import { AnyFunctionAction, AnyFunctionCallAction, AnyFunctionDefAction } from './FunctionActions';
-import { copyMapWithUpdatedValue } from '../../MapHelpers';
+import { newMapWithEntry } from '../../ObjectMaps';
 
 
 function identityReducer<T>(defaultValue: T)
@@ -43,9 +45,9 @@ function functionReducer(state : FunctionsState = newFunctionsState(), action: A
 	}
 }
 
-function functionCallReducer(state = new Map<number, FunctionCallState>(), action: AnyFunctionCallAction)
+function functionCallReducer(state : FunctionCallMap = {}, action: AnyFunctionCallAction)
 {
-	const funcCallState = state.get(action.funcCallId);
+	const funcCallState = state[action.funcCallId];
 
 	switch (action.type)
 	{
@@ -53,13 +55,13 @@ function functionCallReducer(state = new Map<number, FunctionCallState>(), actio
 			const newFuncCallState = setArgument(funcCallState,
 			                                     action.argIndex,
 			                                     action.argValue);
-			return copyMapWithUpdatedValue(state, action.funcCallId, newFuncCallState);
+			return newMapWithEntry(state, action.funcCallId, newFuncCallState);
 		default:
 			return state;
 	}
 }
 
-function functionDefReducer(state = new Map<number, FunctionDefState>(), action: AnyFunctionDefAction)
+function functionDefReducer(state : FunctionDefMap = {}, action: AnyFunctionDefAction)
 {
 	switch (action.type)
 	{

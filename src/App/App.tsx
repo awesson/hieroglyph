@@ -71,10 +71,11 @@ class App extends Component<IAppProps, IAppState>
 		// editor/function def. Eventually this app should render an editor which represents
 		// a function def or potentially a type with a set of statements and this statement list
 		// would only have those statements.
-		let statements: number[] = [];
-		for (const [id, statement] of getAllStatements(this.props.rootState))
+		let allStatementIds: number[] = [];
+		const allStatements = getAllStatements(this.props.rootState);
+		for (const id in allStatements)
 		{
-			statements.push(id);
+			allStatementIds.push(parseInt(id));
 		}
 
 		let contextMenu = null;
@@ -88,7 +89,7 @@ class App extends Component<IAppProps, IAppState>
 				<Row>
 					<Col className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
 						<p className="App-intro">Right click to add statements!</p>
-						<StatementListContainer statements={statements}
+						<StatementListContainer statements={allStatementIds}
 												selectedStatementId={this.state.selectedStatementId}
 												selectedCallback={this.onStatementSelected} />
 						{contextMenu}

@@ -18,9 +18,11 @@ const mapStateToProps = (rootState: RootState) =>
 {
 	// TODO: Should eventually be more than just function defs.
 	let itemInfos: IItemInfo[] = [];
-	for (let [id, funcDef] of getAllFuncDefs(rootState))
+	const funcDefs = getAllFuncDefs(rootState);
+	for (let id in funcDefs)
 	{
-		const info = { id: id, displayText: funcDef.name };
+		const funcDef = funcDefs[id];
+		const info = { id: parseInt(id), displayText: funcDef.name };
 		itemInfos.push(info);
 	}
 	return { itemInfos };
