@@ -1,0 +1,7 @@
+.error {
+	background-color: #ff8560;
+}
+
+.error:focus {
+	background-color: #ff7755;
+}

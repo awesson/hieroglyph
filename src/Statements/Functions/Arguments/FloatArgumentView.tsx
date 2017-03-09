@@ -3,6 +3,8 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
+import './Argument.css';
+
 
 function isNumeric(num: any)
 {
@@ -60,7 +62,7 @@ class FloatArgumentView extends React.Component<IArgumentInputElementProps, IFlo
 		}
 		else
 		{
-			inputField = <Input value={this.state.currentFormInput} onChange={onChange} />
+			inputField = <Input className="error" value={this.state.currentFormInput} onChange={onChange} />
 			errorMsg = <InputGroupAddon>Must be a floating point number</InputGroupAddon>;
 		}
 

@@ -20,18 +20,18 @@ export interface IStatementCompProps
 {
 	concreteStatementId: number;
 	isSelected: boolean;
-	selectedCallback: React.MouseEventHandler<any>;
 }
 
 export interface IStatementElement
 {
 	comp: React.ComponentClass<IStatementCompProps>;
+	selectedCallback: React.MouseEventHandler<any>;
 	viewProps: IStatementCompProps;
 }
 
 const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerProps) =>
 {
-	const statementToElement = (statementId: number) =>
+	const statementToElement = (statementId: number) : IStatementElement =>
 	{
 		const statement = getStatement(rootState, statementId);
 		const comp = getStatementContainerComponent(statement);
@@ -42,9 +42,9 @@ const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerP
 		{
 			myProps.selectedCallback(statementId, event);
 		}
-		const viewProps = { concreteStatementId, isSelected, selectedCallback };
+		const viewProps = { concreteStatementId, isSelected };
 		
-		return { comp, viewProps };
+		return { comp, selectedCallback, viewProps };
 	}
 	const listItems:IStatementElement[] = myProps.statements.map(statementToElement);
 	return { listItems };

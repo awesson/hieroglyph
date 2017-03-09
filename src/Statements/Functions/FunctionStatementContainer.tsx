@@ -11,13 +11,11 @@ const mapStateToProps = (rootState: RootState, myProps: IStatementCompProps) =>
 {
 	const isSelected = myProps.isSelected;
 
-	const selectedCallback = myProps.selectedCallback;
-
 	const functionCall = getFuncCall(rootState, myProps.concreteStatementId);
 	const func = getFuncDef(rootState, functionCall.funcDefId);
 	const name = func.name;
 
-	return { isSelected, selectedCallback, name };
+	return { isSelected, name };
 }
 
 export default connect(mapStateToProps, null)(FunctionStatement);
