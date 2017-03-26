@@ -23,7 +23,10 @@ class StringArgumentView extends React.Component<IArgumentInputElementProps, {}>
 
 	render(): JSX.Element
 	{
-		return <Input value={this.props.curValue} onChange={this.handleOnChange(this.props.onArgSetCallback)} />
+		return <InputGroup>
+		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
+		           <Input value={this.props.curValue} onChange={this.handleOnChange(this.props.onArgSetCallback)} />
+		       </InputGroup>;
 	}
 }
 

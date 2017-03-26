@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Input } from 'reactstrap';
+import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
@@ -24,10 +24,13 @@ class BooleanArgumentView extends React.Component<IArgumentInputElementProps, {}
 	render(): JSX.Element
 	{
 		const onChange = this.handleOnChange(this.props.onArgSetCallback);
-		return <Input type="select" value={this.props.curValue} onChange={onChange}>
-                   <option>True</option>
-                   <option>False</option>
-               </Input>;
+		return <InputGroup>
+		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
+		           <Input type="select" value={this.props.curValue} onChange={onChange}>
+                       <option>True</option>
+                       <option>False</option>
+                   </Input>
+		       </InputGroup>;
 	}
 }
 

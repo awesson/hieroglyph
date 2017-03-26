@@ -67,6 +67,7 @@ class FloatArgumentView extends React.Component<IArgumentInputElementProps, IFlo
 		}
 
 		return <InputGroup>
+		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
 		           {inputField}
 		           {errorMsg}
 			   </InputGroup>;

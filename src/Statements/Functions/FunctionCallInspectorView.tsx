@@ -4,7 +4,7 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 import RootState from '../../RootState';
 import { Type } from '../../Types';
-import { FunctionCallState, FunctionDefState } from './FunctionState';
+import { FunctionCallState, FunctionDefState, getFuncArgTypes } from './FunctionState';
 import { ArgumentInputView, OnArgValueChangeCallback } from './Arguments';
 
 
@@ -12,8 +12,11 @@ export type SetArgValueCallback = (funcCallId: number, argIndex: number, argValu
 
 interface IFunctionCallInspectorViewProps
 {
-	funcCall: FunctionCallState;
-	funcDef: FunctionDefState;
+	funcCallId: number;
+	funcArgumentsCurValues: string[];
+	funcName: string;
+	funcArgumentTypes: Type[];
+	funcArgumentNames: string[];
 	setArgValue: SetArgValueCallback;
 };
 
@@ -35,20 +38,21 @@ class FunctionCallInspectorView extends React.Component<IFunctionCallInspectorVi
 	mapArgumentTypesToInputElements(argType: Type, index: number)
 	{
 		const onArgSetCallback = this.createArgSetCallback(this.props.setArgValue,
-		                                                   this.props.funcCall.myId,
+		                                                   this.props.funcCallId,
 		                                                   index);
-		return <ArgumentInputView key={this.props.funcCall.myId + "_" + index}
+		return <ArgumentInputView key={this.props.funcCallId + "_" + index}
 		                          argType={argType}
-		                          curValue={this.props.funcCall.passedArguments[index]}
+								  name={this.props.funcArgumentNames[index]}
+		                          curValue={this.props.funcArgumentsCurValues[index]}
 		                          onArgSetCallback={onArgSetCallback} />;
 	}
 
 	render(): JSX.Element
 	{
-		const args = this.props.funcDef.argumentTypes.map(this.mapArgumentTypesToInputElements);
+		const args = this.props.funcArgumentTypes.map(this.mapArgumentTypesToInputElements);
 
 		return <div>
-		           <p>Inspecting: <b>{this.props.funcDef.name}</b></p>
+		           <p>Inspecting: <b>{this.props.funcName}</b></p>
 			       {args}
 		       </div>;
 	}

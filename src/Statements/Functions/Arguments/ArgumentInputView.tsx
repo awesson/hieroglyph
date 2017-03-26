@@ -10,6 +10,7 @@ export type OnArgValueChangeCallback = (newValue: string) => void;
 
 export interface IArgumentInputElementProps
 {
+	name: string;
 	curValue: string;
 	onArgSetCallback: OnArgValueChangeCallback;
 }
@@ -39,7 +40,7 @@ const ArgumentInputElement = (props: IArgumentInputViewProps) =>
 			break;
 	}
 
-	return <InputElement curValue={props.curValue} onArgSetCallback={props.onArgSetCallback}/>;
+	return <InputElement name={props.name} curValue={props.curValue} onArgSetCallback={props.onArgSetCallback}/>;
 }
 
 export default ArgumentInputElement;

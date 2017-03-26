@@ -12,6 +12,7 @@ import
 import reducer from './FunctionReducers';
 import FunctionStatementContainer from './FunctionStatementContainer';
 import FunctionCallInspectorContainer from './FunctionCallInspectorContainer';
+import * as Arguments from './Arguments';
 
 export
 {
@@ -25,5 +26,6 @@ export
 	SetFunctionCallArgumentAction,
 	createSetFunctionCallArgumentAction,
 	AnyFunctionCallAction,
-	reducer
+	reducer,
+	Arguments
 };

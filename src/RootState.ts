@@ -6,6 +6,7 @@ import { Functions, StatementState } from './Statements';
 import FunctionsState = Functions.FunctionState.FunctionsState;
 import withNewFuncDef = Functions.FunctionState.withNewFuncDef;
 import newFunctionsState = Functions.FunctionState.newFunctionsState;
+import newArgumentDefState = Functions.Arguments.ArgumentState.newArgumentDefState;
 import StatementsState = StatementState.StatementsState;
 import newStatementsState = StatementState.newStatementsState;
 
@@ -19,22 +20,28 @@ export function initRootState()
 
 	// TODO: Eventually deserialize this data the same as how the user
 	// created data will get deserialized.
+	const printArg = newArgumentDefState("statement", Type.String);
 	functionsState = withNewFuncDef(functionsState,
 	                                "Print",
 	                                Type.Void,
-	                                [Type.String]);
+	                                [printArg]);
+	const sqrtArg = newArgumentDefState("value", Type.Float);
 	functionsState = withNewFuncDef(functionsState,
 	                                "SquareRoot",
 	                                Type.Float,
-	                                [Type.Float]);
+	                                [sqrtArg]);
+	const absArg = newArgumentDefState("value", Type.Float);
 	functionsState = withNewFuncDef(functionsState,
 	                                "AbsoluteValue",
 	                                Type.Float,
-	                                [Type.Float]);
+	                                [absArg]);
+	const clampValueArg = newArgumentDefState("value", Type.Float);
+	const clampMinArg = newArgumentDefState("min", Type.Float);
+	const clampMaxArg = newArgumentDefState("max", Type.Float);
 	functionsState = withNewFuncDef(functionsState,
 	                                "Clamp",
 	                                Type.Float,
-	                                [Type.Float, Type.Float, Type.Float]);
+	                                [clampValueArg, clampMinArg, clampMaxArg]);
 
 	return { ...functionsState, ...newStatementsState() };
 }

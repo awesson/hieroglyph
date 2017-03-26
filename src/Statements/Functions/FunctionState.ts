@@ -1,3 +1,7 @@
+import { ArgumentState } from './Arguments';
+import ArgumentDefState = ArgumentState.ArgumentDefState;
+import getArgumentTypes = ArgumentState.getArgumentTypes;
+import getArgumentNames = ArgumentState.getArgumentNames;
 import { Type, mapToDefaultValues } from '../../Types';
 import { INumberMap, newMapWithEntry } from '../../ObjectMaps';
 
@@ -7,7 +11,7 @@ export interface FunctionDefState
 	readonly myId: number;
 	readonly name: string;
 	readonly returnType: Type;
-	readonly argumentTypes: Type[];
+	readonly argumentDefs: ArgumentDefState[];
 	readonly statements: number[];
 	readonly isBuiltin: boolean;
 }
@@ -15,16 +19,26 @@ export interface FunctionDefState
 export function newFunctionDefState(myId: number,
                                     name: string = "unnamed",
                                     returnType: Type = Type.Void,
-                                    argumentTypes: Type[] = null,
+                                    argumentDefs: ArgumentDefState[] = [],
                                     isBuiltin: boolean = true,
-                                    statements: number[] = null) : FunctionDefState
+                                    statements: number[] = []) : FunctionDefState
 {
-	return { myId, name, returnType, argumentTypes, statements, isBuiltin };
+	return { myId, name, returnType, argumentDefs, statements, isBuiltin };
+}
+
+export function getFuncArgTypes(state: FunctionDefState)
+{
+	return getArgumentTypes(state.argumentDefs);
 }
 
 export function getDefaultArguments(state: FunctionDefState)
 {
-	return mapToDefaultValues(state.argumentTypes);
+	return mapToDefaultValues(getFuncArgTypes(state));
+}
+
+export function getFuncArgNames(state: FunctionDefState)
+{
+	return getArgumentNames(state.argumentDefs);
 }
 
 
@@ -51,6 +65,7 @@ export function setArgument(state: FunctionCallState, index: number, value: stri
 	                    ...state.passedArguments.slice(index + 1)];
 	return newFunctionCallState(state.myId, state.funcDefId, newArguments);
 }
+
 
 export type FunctionDefMap = INumberMap<FunctionDefState>;
 
@@ -94,13 +109,13 @@ export function withNewFunctionCall(state: FunctionsState, sourceFuncDefId: numb
 export function withNewFuncDef(state: FunctionsState,
                                name: string = "unnamed",
                                returnType: Type = Type.Void,
-                               argumentTypes: Type[] = null,
+                               argumentDefs: ArgumentDefState[] = [],
                                isBuiltin: boolean = true)
 {
 	const newFuncDef = newFunctionDefState(state.nextFunctionId,
 	                                       name,
 	                                       returnType,
-	                                       argumentTypes,
+	                                       argumentDefs,
 	                                       isBuiltin);
 	const newFuncDefMap = newMapWithEntry(state.functions, state.nextFunctionId, newFuncDef);
 	return newFunctionsState(newFuncDefMap,
@@ -112,6 +127,11 @@ export function withNewFuncDef(state: FunctionsState,
 export function getFuncDef(state: FunctionsState, id: number)
 {
 	return state.functions[id];
+}
+
+export function getFuncCallDef(state: FunctionsState, funcCallState: FunctionCallState)
+{
+	return getFuncDef(state, funcCallState.funcDefId);
 }
 
 export function getAllFuncDefs(state: FunctionsState)

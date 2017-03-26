@@ -1,3 +1,9 @@
 import ArgumentInputView, { OnArgValueChangeCallback } from './ArgumentInputView';
+import * as ArgumentState from './ArgumentState';
 
-export { ArgumentInputView, OnArgValueChangeCallback };
+export
+{
+	ArgumentInputView,
+	OnArgValueChangeCallback,
+	ArgumentState
+};
