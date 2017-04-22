@@ -9,7 +9,7 @@ import getAllStatements = StatementState.getAllStatements;
 import { StatementPicker } from '../ContextMenus';
 import { InspectorContainer } from '../Editors/Inspectors';
 
-import './App.css';
+import '../index.css';
 
 
 interface IAppProps
@@ -85,16 +85,16 @@ class App extends Component<IAppProps, IAppState>
 		}
 
 		return (
-			<Container>
+			<Container fluid="true">
 				<Row>
-					<Col className="App" onClick={this.handleClick} onContextMenu={this.handleClick}>
-						<p className="App-intro">Right click to add statements!</p>
+					<Col className="editor-section" onClick={this.handleClick} onContextMenu={this.handleClick}>
+						<p className="header">RIGHT CLICK TO ADD STATEMENTS!</p>
 						<StatementListContainer statements={allStatementIds}
 												selectedStatementId={this.state.selectedStatementId}
 												selectedCallback={this.onStatementSelected} />
 						{contextMenu}
 					</Col>
-					<Col className="Inspector">
+					<Col className="editor-section">
 						<InspectorContainer statementId={this.state.selectedStatementId} />
 					</Col>
 				</Row>

@@ -3,7 +3,7 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
-import './Argument.css';
+import '../../../index.css';
 
 
 function isNumeric(num: any)
@@ -58,16 +58,18 @@ class FloatArgumentView extends React.Component<IArgumentInputElementProps, IFlo
 		let inputField;
 		if (this.state.inputIsValid)
 		{
-			inputField = <Input value={this.props.curValue} onChange={onChange} />
+			inputField = <Input className="hieroglyph-list-item"
+			                    value={this.props.curValue}
+			                    onChange={onChange} />
 		}
 		else
 		{
 			inputField = <Input className="error" value={this.state.currentFormInput} onChange={onChange} />
-			errorMsg = <InputGroupAddon>Must be a floating point number</InputGroupAddon>;
+			errorMsg = <InputGroupAddon className="addon">Must be a floating point number</InputGroupAddon>;
 		}
 
-		return <InputGroup>
-		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
+		return <InputGroup >
+		           <InputGroupAddon className="addon">{this.props.name}:</InputGroupAddon>
 		           {inputField}
 		           {errorMsg}
 			   </InputGroup>;

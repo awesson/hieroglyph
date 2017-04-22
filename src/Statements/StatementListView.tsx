@@ -3,6 +3,8 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 
 import { IStatementElement } from './StatementListContainer';
 
+import '../index.css';
+
 
 interface IStatementListViewProps
 {
@@ -21,8 +23,10 @@ class StatementListView extends Component<IStatementListViewProps, {}>
 			// but this is the only way I know that I can make the whole background be colored.
 			// (It seems worse to make the assumtion in the statment view that it's
 			// a) in a list and b) that the list is a ListGroup.)
-			const colorType = eleInfo.viewProps.isSelected ? "info" : "normal";
-			return <ListGroupItem color={colorType}
+			const cssClass = eleInfo.viewProps.isSelected
+			               ? "hieroglyph-list-item-selected"
+			               : "hieroglyph-list-item";
+			return <ListGroupItem className={cssClass}
 			                      key={eleInfo.viewProps.concreteStatementId}
 			                      onClick={eleInfo.selectedCallback}>
 				       <Ele  {...eleInfo.viewProps} />

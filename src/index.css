@@ -1,5 +1,52 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+.header {
+    padding-top: 20px;
+	  font-size: 23px;
+	  color: #7cdcff;
+}
+
+.hieroglyph-list-item {
+    color: #7cdcff;
+    border: 1px solid #7cdcff;
+    background-color: #333333;
+}
+
+.hieroglyph-list-item:focus, .hieroglyph-list-item-selected {
+    color: #7cdcff;
+    border: 1px solid #7cdcff;
+    background-color: #404047;
+}
+
+.editor-section {
+	  height: 1600px;
+	  text-align: center;
+	  border: 1px solid black;
+	  background-color: #1e1e1e;
+}
+
+.error {
+	color: #333333;
+	border: 1px solid #7cdcff;
+	background-color: #fa5960;
+}
+
+.error:focus {
+	color: #333333;
+	border: 1px solid #7cdcff;
+	background-color: #fa5960;
+}
+
+.input {
+	color: #7cdcff;
+	border: 1px solid #7cdcff;
+	background-color: #333333;
+}
+
+.input:focus {
+	color: #7cdcff;
+	background-color: #3a3a3a;
+}
+
+.addon {
+	color: black;
+	background-color: #7cdcff;
 }

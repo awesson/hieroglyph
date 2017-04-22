@@ -1,6 +1,8 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import './../../index.css';
+
 
 export interface IInspectorCompProps
 {
@@ -20,7 +22,7 @@ class InspectorView extends React.Component<IInspectorViewProps, {}>
 		// Check if there isn't A statement selected
 		if (this.props.viewProps.concreteStatementId < 0)
 		{
-			return <span>Select a statement to inspect</span>;
+			return <p className="header">SELECT A STATMENT TO INSPECT</p>;
 		}
 
 		const InspectorCompType = this.props.comp;

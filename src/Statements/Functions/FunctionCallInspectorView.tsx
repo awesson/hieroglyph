@@ -7,6 +7,8 @@ import { Type } from '../../Types';
 import { FunctionCallState, FunctionDefState, getFuncArgTypes } from './FunctionState';
 import { ArgumentInputView, OnArgValueChangeCallback } from './Arguments';
 
+import '../../index.css';
+
 
 export type SetArgValueCallback = (funcCallId: number, argIndex: number, argValue: string) => void;
 
@@ -52,7 +54,7 @@ class FunctionCallInspectorView extends React.Component<IFunctionCallInspectorVi
 		const args = this.props.funcArgumentTypes.map(this.mapArgumentTypesToInputElements);
 
 		return <div>
-		           <p>Inspecting: <b>{this.props.funcName}</b></p>
+		           <p className="header">INSPECTING: <b>{this.props.funcName}</b></p>
 			       {args}
 		       </div>;
 	}

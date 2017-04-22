@@ -24,8 +24,10 @@ class StringArgumentView extends React.Component<IArgumentInputElementProps, {}>
 	render(): JSX.Element
 	{
 		return <InputGroup>
-		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
-		           <Input value={this.props.curValue} onChange={this.handleOnChange(this.props.onArgSetCallback)} />
+		           <InputGroupAddon className="addon">{this.props.name}:</InputGroupAddon>
+		           <Input className="hieroglyph-list-item"
+		                  value={this.props.curValue}
+		                  onChange={this.handleOnChange(this.props.onArgSetCallback)} />
 		       </InputGroup>;
 	}
 }

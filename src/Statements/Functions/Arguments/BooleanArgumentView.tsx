@@ -25,8 +25,11 @@ class BooleanArgumentView extends React.Component<IArgumentInputElementProps, {}
 	{
 		const onChange = this.handleOnChange(this.props.onArgSetCallback);
 		return <InputGroup>
-		           <InputGroupAddon>{this.props.name}:</InputGroupAddon>
-		           <Input type="select" value={this.props.curValue} onChange={onChange}>
+		           <InputGroupAddon className="addon">{this.props.name}:</InputGroupAddon>
+		           <Input className="hieroglyph-list-item"
+				          type="select"
+		                  value={this.props.curValue}
+		                  onChange={onChange}>
                        <option>True</option>
                        <option>False</option>
                    </Input>
