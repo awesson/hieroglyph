@@ -1,5 +1,9 @@
 # VS
 .vscode
+.suo
+*.user
+*.userosscache
+*.sln.docstates
 
 # dependencies
 node_modules
@@ -7,12 +11,18 @@ node_modules
 # testing
 coverage
 
-# production
+# builds
 build
 ts-build
+[Dd]ebug/
+[Rr]elease/
+x64/
+build/
+[Bb]in/
+[Oo]bj/
 
 # misc
 .DS_Store
 .env
-npm-debug.log
+*.log
 *~
