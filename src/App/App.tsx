@@ -85,7 +85,7 @@ class App extends Component<IAppProps, IAppState>
 		}
 
 		return (
-			<Container fluid="true">
+			<Container fluid>
 				<Row>
 					<Col className="editor-section" onClick={this.handleClick} onContextMenu={this.handleClick}>
 						<p className="header">RIGHT CLICK TO ADD STATEMENTS!</p>

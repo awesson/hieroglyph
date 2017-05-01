@@ -22,6 +22,9 @@ var pathExists = require('path-exists');
 var config = require('../config/webpack.config.dev');
 var paths = require('../config/paths');
 
+var webSocketServer = require('../server/websocket_server');
+var tcpSocketServer = require('../server/tcp_server');
+
 var useYarn = pathExists.sync(paths.yarnLockFile);
 var cli = useYarn ? 'yarn' : 'npm';
 var isInteractive = process.stdout.isTTY;
@@ -263,6 +266,8 @@ function runDevServer(host, port, protocol) {
   // Our custom middleware proxies requests to /index.html or a remote API.
   addMiddleware(devServer);
 
+  runSockets(devServer.listeningApp);
+
   // Launch WebpackDevServer.
   devServer.listen(port, (err, result) => {
     if (err) {
@@ -279,6 +284,12 @@ function runDevServer(host, port, protocol) {
       openBrowser(protocol + '://' + host + ':' + port + '/');
     }
   });
+}
+
+function runSockets(server)
+{
+	const webServer = webSocketServer.startWebsocketServer(server);
+	tcpSocketServer.startTcpServer(webServer);
 }
 
 function run(port) {

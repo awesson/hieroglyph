@@ -6,8 +6,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { initRootState } from './RootState';
 import rootReducer from './RootReducer';
-
+import ClientConnection from './ClientConnection';
 import App from './App';
+
+
+const socket = ClientConnection.start();
 
 const castWindow = window as any;
 const store = createStore(rootReducer,
