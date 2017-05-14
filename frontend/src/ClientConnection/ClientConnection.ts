@@ -7,25 +7,20 @@ function testConnection(socket: SocketIOClient.Socket)
 	console.log('CONNECTED!');
 }
 
-export function start(): SocketIOClient.Socket
+export function start(initFunc:(initialStateJson: string) => void): SocketIOClient.Socket
 {
 	const socket = Socket();
 	socket.on('connect', testConnection);
-	socket.on('message', receivedState);
+	socket.on('message', initFunc);
 	return socket;
-}
-
-export function receivedState(stateJson: string)
-{
-	console.log("received state:", stateJson);
 }
 
 function save(socket: SocketIOClient.Socket, state: RootState)
 {
-	// TODO(aweson): Send the json
+	socket.send(JSON.stringify(state));
 }
 
-export function getSaveFunc(socket: SocketIOClient.Socket, state: RootState)
+export function getSaveFunc(socket: SocketIOClient.Socket)
 {
 	return (state: RootState) =>
 	{

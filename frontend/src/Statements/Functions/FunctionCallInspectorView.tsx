@@ -6,13 +6,14 @@ import RootState from '../../RootState';
 import { Type } from '../../Types';
 import { FunctionCallState, FunctionDefState, getFuncArgTypes } from './FunctionState';
 import { ArgumentInputView, OnArgValueChangeCallback } from './Arguments';
+import { IInspectorCompProps } from '../../Editors/Inspectors';
 
 import '../../index.css';
 
 
 export type SetArgValueCallback = (funcCallId: number, argIndex: number, argValue: string) => void;
 
-interface IFunctionCallInspectorViewProps
+interface IFunctionCallInspectorViewProps extends IInspectorCompProps
 {
 	funcCallId: number;
 	funcArgumentsCurValues: string[];

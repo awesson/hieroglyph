@@ -6,10 +6,21 @@ import { IStatementElement } from './StatementListContainer';
 import '../index.css';
 
 
-interface IStatementListViewProps
+type StatementSelectedCallback = (statementId: number, event: React.MouseEvent<any>) => void;
+
+export interface IStatementListViewConnectedProps
+{
+	statements: number[];
+	selectedStatementId: number;
+	selectedCallback: StatementSelectedCallback;
+}
+
+interface IStatementListViewOwnProps
 {
 	listItems: IStatementElement[];
 }
+
+type IStatementListViewProps = IStatementListViewOwnProps & IStatementListViewConnectedProps;
 
 class StatementListView extends Component<IStatementListViewProps, {}>
 {

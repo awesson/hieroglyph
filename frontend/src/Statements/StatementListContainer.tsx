@@ -3,18 +3,10 @@ import React from 'react';
 import { connect } from "react-redux";
 
 import { getStatementContainerComponent, getStatement } from './StatementState';
-import StatementListView from './StatementListView';
+import StatementListView, { IStatementListViewConnectedProps } from './StatementListView';
 import RootState from '../RootState';
 
 
-export type StatementSelectedCallback = (statementId: number, event: React.MouseEvent<any>) => void;
-
-interface IStatementListContainerProps
-{
-	statements: number[];
-	selectedStatementId: number;
-	selectedCallback: StatementSelectedCallback;
-}
 
 export interface IStatementCompProps
 {
@@ -29,7 +21,7 @@ export interface IStatementElement
 	viewProps: IStatementCompProps;
 }
 
-const mapStateToProps = (rootState: RootState, myProps: IStatementListContainerProps) =>
+const mapStateToProps = (rootState: RootState, myProps: IStatementListViewConnectedProps) =>
 {
 	const statementToElement = (statementId: number) : IStatementElement =>
 	{

@@ -3,26 +3,25 @@ import { connect } from 'react-redux';
 
 import { StatementState } from '../../Statements';
 import RootState from '../../RootState';
-import InspectorView, { IInspectorViewProps } from './InspectorView';
+import InspectorView, { IInspectorViewConnectedProps, IInspectorViewOwnProps } from './InspectorView';
 import getStatement = StatementState.getStatement;
 
 
-interface IInspectorContainerProps
-{
-	statementId: number;
-}
-
-const mapStateToProps = (rootState: RootState, myProps: IInspectorContainerProps) =>
+const mapStateToProps = (rootState: RootState, myProps: IInspectorViewOwnProps) =>
 {
 	// Check if there isn't a selected statement
 	if (myProps.statementId < 0)
 	{
-		return {comp: null, viewProps: {concreteStatementId: myProps.statementId}};
+		return { comp: null, viewProps: { concreteStatementId: myProps.statementId } };
 	}
 
 	const statement = getStatement(rootState, myProps.statementId);
 	const jsxType = StatementState.getInspectorContainerComponent(statement);
-	const viewProps:IInspectorViewProps = {comp: jsxType, viewProps: {concreteStatementId: statement.concreteStatementId}};
+	const viewProps:IInspectorViewConnectedProps =
+	      {
+		      comp: jsxType,
+		      viewProps: { concreteStatementId: statement.concreteStatementId }
+	      };
 	return viewProps;
 }
 

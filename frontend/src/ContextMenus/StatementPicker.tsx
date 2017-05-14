@@ -8,12 +8,6 @@ import getAllFuncDefs = FunctionState.getAllFuncDefs;
 import DropDownSelector, { IItemInfo } from './DropDownSelector'
 
 
-interface IStatementPickerProps
-{
-	rootState: RootState;
-	dispatch: Dispatch<RootState>;
-}
-
 const mapStateToProps = (rootState: RootState) =>
 {
 	// TODO: Should eventually be more than just function defs.

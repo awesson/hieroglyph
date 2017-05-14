@@ -9,11 +9,19 @@ export interface IInspectorCompProps
 	concreteStatementId: number;
 }
 
-export interface IInspectorViewProps
+export interface IInspectorViewConnectedProps
 {
 	comp: React.ComponentClass<IInspectorCompProps>;
 	viewProps: IInspectorCompProps;
 }
+
+// Without subtraction types, this needs to be defined here for the rest of the typechecking to work :(
+export interface IInspectorViewOwnProps
+{
+	statementId: number;
+}
+
+type IInspectorViewProps = IInspectorViewConnectedProps & IInspectorViewOwnProps;
 
 class InspectorView extends React.Component<IInspectorViewProps, {}>
 {

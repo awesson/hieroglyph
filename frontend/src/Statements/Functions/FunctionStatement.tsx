@@ -1,7 +1,10 @@
 import * as React from "react";
 
+import { IStatementCompProps } from '../StatementListContainer';
 
-interface IFunctionStatementProps
+
+
+export interface IFunctionStatementProps extends IStatementCompProps
 {
 	isSelected: boolean;
 	name: string;

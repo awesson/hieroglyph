@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Timers;
 
 namespace HieroglyphBackend
 {
@@ -17,8 +12,7 @@ namespace HieroglyphBackend
 
 		public delegate void ConnectionClosedDelegate();
 		private readonly ConnectionClosedDelegate m_ConnectionClosedDelegate;
-
-		//private TcpListener m_TcpListener;
+		
 		private TcpClient m_ConnectedClient;
 		private NetworkStream m_NetworkStream;
 
@@ -58,10 +52,6 @@ namespace HieroglyphBackend
 			{
 				throw new ObjectDisposedException("Tried to connect, but the underlying stream is already closed.");
 			}
-
-			//m_TcpListener = new TcpListener(ipAddress, port);
-			//m_TcpListener.Start();
-			//m_TcpListener.AcceptTcpClientAsync();
 
 			m_ConnectionIp = ipAddress;
 			m_ConnectionPort = port;

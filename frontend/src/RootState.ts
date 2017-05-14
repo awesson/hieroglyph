@@ -10,7 +10,7 @@ import newArgumentDefState = Functions.Arguments.ArgumentState.newArgumentDefSta
 import StatementsState = StatementState.StatementsState;
 import newStatementsState = StatementState.newStatementsState;
 
-interface RootState extends StatementsState, FunctionsState
+export interface RootState extends StatementsState, FunctionsState
 {
 }
 
@@ -47,7 +47,7 @@ export function initRootState()
 }
 
 export function newRootState(functionsState : FunctionsState = newFunctionsState(),
-                             statementsState : StatementsState = newStatementsState())
+                             statementsState : StatementsState = newStatementsState()): RootState
 {
 	return { ...functionsState, ...statementsState };
 }

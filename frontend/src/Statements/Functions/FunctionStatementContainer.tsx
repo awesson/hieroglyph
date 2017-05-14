@@ -1,3 +1,4 @@
+import { IFunctionStatementProps } from './FunctionStatement';
 import { Dispatch } from 'redux';
 import { connect } from "react-redux";
 
@@ -9,13 +10,11 @@ import { IStatementCompProps } from '../StatementListContainer';
 
 const mapStateToProps = (rootState: RootState, myProps: IStatementCompProps) =>
 {
-	const isSelected = myProps.isSelected;
-
 	const functionCall = getFuncCall(rootState, myProps.concreteStatementId);
 	const func = getFuncDef(rootState, functionCall.funcDefId);
 	const name = func.name;
 
-	return { isSelected, name };
+	return { name };
 }
 
-export default connect(mapStateToProps, null)(FunctionStatement);
+export default connect(mapStateToProps)(FunctionStatement);
