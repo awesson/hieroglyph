@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Container, Row, Col } from 'reactstrap';
 
-import RootState from '../RootState';
+import RootState, { getStatementsState } from '../RootState';
 import { StatementListContainer, StatementState } from '../Statements';
 import getAllStatements = StatementState.getAllStatements;
 import { StatementPicker } from '../ContextMenus';
@@ -72,7 +72,7 @@ class App extends Component<IAppProps, IAppState>
 		// a function def or potentially a type with a set of statements and this statement list
 		// would only have those statements.
 		let allStatementIds: number[] = [];
-		const allStatements = getAllStatements(this.props.rootState);
+		const allStatements = getAllStatements(getStatementsState(this.props.rootState));
 		for (const id in allStatements)
 		{
 			allStatementIds.push(parseInt(id));

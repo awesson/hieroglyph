@@ -2,7 +2,7 @@ import StatementListContainer, { IStatementCompProps, IStatementElement } from '
 import StatementListView from './StatementListView';
 import * as StatementState from './StatementState';
 import { StatementType } from './StatementTypes';
-import { AddStatementAction, createAddStatementAction, AnyStatementAction } from './StatementActions';
+export * from './StatementActions';
 import reducer from './StatementReducers';
 
 import * as Functions from './Functions';
@@ -16,8 +16,5 @@ export
 	StatementState,
 	StatementType,
 	reducer,
-	AddStatementAction,
-	createAddStatementAction,
-	AnyStatementAction,
 	Functions
 };

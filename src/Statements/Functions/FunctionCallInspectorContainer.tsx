@@ -2,7 +2,7 @@ import * as React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
-import RootState from '../../RootState';
+import RootState, { getFunctionsState } from '../../RootState';
 import { getFuncCall, getFuncCallDef, getFuncArgTypes, getFuncArgNames } from './FunctionState';
 import FunctionCallInspectorView, { SetArgValueCallback } from './FunctionCallInspectorView';
 import { createSetFunctionCallArgumentAction } from './FunctionActions';
@@ -10,10 +10,11 @@ import { IInspectorCompProps } from '../../Editors/Inspectors';
 
 const mapStateToProps = (state: RootState, myProps: IInspectorCompProps) =>
 {
-	const funcCall = getFuncCall(state, myProps.concreteStatementId);
+	const functionsState = getFunctionsState(state);
+	const funcCall = getFuncCall(functionsState, myProps.concreteStatementId);
 	const funcCallId = funcCall.myId;
 	const funcArgumentsCurValues = funcCall.passedArguments;
-	const funcDef = getFuncCallDef(state, funcCall);
+	const funcDef = getFuncCallDef(functionsState, funcCall);
 	const funcName = funcDef.name;
 	const funcArgumentTypes = getFuncArgTypes(funcDef);
 	const funcArgumentNames = getFuncArgNames(funcDef);

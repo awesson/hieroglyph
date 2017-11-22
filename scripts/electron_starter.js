@@ -25,13 +25,25 @@ function createWindow()
             slashes: true
         }));
 	}
-	else if (process.env.ELECTRON_START_URL)
-	{
-		mainWindow.loadURL(process.env.ELECTRON_START_URL);
-	}
 	else
 	{
-		mainWindow.loadURL('http://localhost:3000');
+		if (process.env.ELECTRON_START_URL)
+		{
+			mainWindow.loadURL(process.env.ELECTRON_START_URL);
+		}
+		else
+		{
+			mainWindow.loadURL('http://localhost:3000');
+		}
+
+		mainWindow.webContents.openDevTools();
+
+		// It looks relative to the working directory even with the %LOCALAPPDATA% env variable,
+		// so just hard coding the drive here.
+		// TODO: Handle the location on macOS as well
+		const extensionsLoc = 'C:\\Users\\Andrew\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\';
+		BrowserWindow.addDevToolsExtension(extensionsLoc + "fmkadmapgofadopljbjfkapdkoienihi\\2.5.2_0");
+		BrowserWindow.addDevToolsExtension(extensionsLoc + "lmhkpmbekcpmknklioeibfkpmmfibljd\\2.15.1_0");
 	}
 
 	// Open the DevTools.

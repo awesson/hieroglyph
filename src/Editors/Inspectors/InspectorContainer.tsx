@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from 'react-redux';
 
 import { StatementState } from '../../Statements';
-import RootState from '../../RootState';
+import RootState, { getStatementsState } from '../../RootState';
 import InspectorView, { IInspectorViewConnectedProps, IInspectorViewOwnProps } from './InspectorView';
 import getStatement = StatementState.getStatement;
 
@@ -15,7 +15,7 @@ const mapStateToProps = (rootState: RootState, myProps: IInspectorViewOwnProps) 
 		return { comp: null, viewProps: { concreteStatementId: myProps.statementId } };
 	}
 
-	const statement = getStatement(rootState, myProps.statementId);
+	const statement = getStatement(getStatementsState(rootState), myProps.statementId);
 	const jsxType = StatementState.getInspectorContainerComponent(statement);
 	const viewProps:IInspectorViewConnectedProps =
 	      {

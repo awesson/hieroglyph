@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux';
 
-import RootState from '../../RootState';
-import { AllActions } from '../../RootActions';
 import
 {
 	newFunctionsState,
@@ -16,15 +14,8 @@ import
 } from './FunctionState';
 import { AnyFunctionAction, AnyFunctionCallAction, AnyFunctionDefAction } from './FunctionActions';
 import { newMapWithEntry } from '../../ObjectMaps';
+import identityReducer from '../../Misc/IdentityReducer';
 
-
-function identityReducer<T>(defaultValue: T)
-{
-	return (state: T = defaultValue, action: AllActions) =>
-	{
-		return state;
-	}
-}
 
 const reduceChildren = combineReducers<FunctionsState>({
 	functions: functionDefReducer,
@@ -33,25 +24,23 @@ const reduceChildren = combineReducers<FunctionsState>({
 	nextFunctionCallId: identityReducer(0)
 });
 
-function functionReducer(state : FunctionsState = newFunctionsState(), action: AllActions)
+function functionReducer(state : FunctionsState = newFunctionsState(), action: AnyFunctionAction)
 {
 	switch (action.type)
 	{
 		case "AddFunctionCallAction":
 			return withNewFunctionCall(state, action.funcDefId);
 		default:
-			// TODO: Do I need to add identity functions for the indices members?
-			return reduceChildren(getFunctionsState(state), action);
+			return reduceChildren(state, action);
 	}
 }
 
 function functionCallReducer(state : FunctionCallMap = {}, action: AnyFunctionCallAction)
 {
-	const funcCallState = state[action.funcCallId];
-
 	switch (action.type)
 	{
 		case "SetFunctionCallArgumentAction":
+			const funcCallState = state[action.funcCallId];
 			const newFuncCallState = setArgument(funcCallState,
 			                                     action.argIndex,
 			                                     action.argValue);

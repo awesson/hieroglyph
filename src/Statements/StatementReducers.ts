@@ -1,21 +1,41 @@
+import functionReducer from './Functions/FunctionReducers';
 import { combineReducers, Action } from 'redux';
 
-import { AllActions } from '../RootActions';
-import { StatementsState, withNewStatement, newStatementsState, copyStatementsState } from './StatementState';
+import * as Functions from './Functions';
+import * as State from './StatementState';
 import { StatementType } from './StatementTypes';
+import { AnyStatementAction } from './StatementActions';
+import identityReducer from '../Misc/IdentityReducer';
 
 
-function statementReducer(state : StatementsState = newStatementsState(), action: AllActions)
+function addFunctionCall(state: State.StatementsState, action: Functions.AddFunctionCallAction)
+{
+	let newFunctionState = Functions.reducer(State.getFunctionsState(state), action);
+
+	let newFuncCall = Functions.getLastCreatedFuncCall(newFunctionState);
+	if (!newFuncCall)
+	{
+		return state;
+	}
+
+	state = State.withNewFunctionsState(state, newFunctionState);
+	return State.withNewStatement(state, newFuncCall.myId, StatementType.FunctionCall);
+}
+
+const reduceChildren = combineReducers<State.StatementsState>({
+	statements: identityReducer({}),
+	nextStatementId: identityReducer(0),
+	functionsState: functionReducer,
+});
+
+function statementReducer(state : State.StatementsState = State.newStatementsState(), action: AnyStatementAction)
 {
 	switch (action.type)
 	{
-		case "AddStatementAction":
-			return withNewStatement(state,
-			                        action.concreteStatementId,
-			                        action.statementType);
+		case "AddFunctionCallAction":
+			return addFunctionCall(state, action);
 		default:
-			// Need to make a new copy since the state passed in may be more than just a StatementsState.
-			return copyStatementsState(state);
+			return reduceChildren(state, action);
 	}
 }
 

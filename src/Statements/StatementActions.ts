@@ -1,18 +1,6 @@
-import { StatementType } from './StatementTypes';
+import { AnyFunctionAction } from './Functions';
 
-interface AddStatementAction
-{
-	type: "AddStatementAction";
-	concreteStatementId: number;
-	statementType: StatementType;
-}
 
-function createAddStatementAction(concreteStatementId: number,
-                                  statementType: StatementType): AddStatementAction
-{
-	return { type: "AddStatementAction", concreteStatementId, statementType };
-}
+type AnyStatementAction = AnyFunctionAction;
 
-type AnyStatementAction = AddStatementAction;
-
-export { AddStatementAction, createAddStatementAction, AnyStatementAction };
+export { AnyStatementAction };

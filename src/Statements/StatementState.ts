@@ -1,6 +1,8 @@
 import { INumberMap, newMapWithEntry } from '../ObjectMaps';
 import { StatementType } from './StatementTypes';
-import { FunctionStatementContainer, FunctionCallInspectorContainer } from './Functions';
+import * as Functions from './Functions';
+import Arguments = Functions.Arguments;
+import { Type } from '../Types';
 
 
 interface StatementState
@@ -23,7 +25,7 @@ function getStatementContainerComponent(state: StatementState)
 	{
 		default:
 		case StatementType.FunctionCall:
-			return FunctionStatementContainer;
+			return Functions.FunctionStatementContainer;
 	}
 }
 
@@ -33,7 +35,7 @@ function getInspectorContainerComponent(state: StatementState)
 	{
 		default:
 		case StatementType.FunctionCall:
-			return FunctionCallInspectorContainer;
+			return Functions.FunctionCallInspectorContainer;
 	}
 }
 
@@ -44,18 +46,51 @@ interface StatementsState
 {
 	readonly statements: StatementMap;
 	readonly nextStatementId: number;
+	readonly functionsState: Functions.FunctionsState;
 }
 
-function newStatementsState(statements: StatementMap = {},
-                            nextStatementId: number = 0) : StatementsState
+function initStatementsState()
 {
-	return { statements, nextStatementId };
+	let functionsState = Functions.newFunctionsState();
+
+	// TODO: Eventually deserialize this data the same as how the user
+	// created data will get deserialized.
+	const printArg = Arguments.newArgumentDefState("statement", Type.String);
+	functionsState = Functions.withNewFuncDef(
+		functionsState,
+		"Print",
+		Type.Void,
+		[printArg]);
+	const sqrtArg = Arguments.newArgumentDefState("value", Type.Float);
+	functionsState = Functions.withNewFuncDef(
+		functionsState,
+		"SquareRoot",
+		Type.Float,
+		[sqrtArg]);
+	const absArg = Arguments.newArgumentDefState("value", Type.Float);
+	functionsState = Functions.withNewFuncDef(
+		functionsState,
+		"AbsoluteValue",
+		Type.Float,
+		[absArg]);
+	const clampValueArg = Arguments.newArgumentDefState("value", Type.Float);
+	const clampMinArg = Arguments.newArgumentDefState("min", Type.Float);
+	const clampMaxArg = Arguments.newArgumentDefState("max", Type.Float);
+	functionsState = Functions.withNewFuncDef(
+		functionsState,
+		"Clamp",
+		Type.Float,
+		[clampValueArg, clampMinArg, clampMaxArg]);
+
+	return newStatementsState({}, 0, functionsState);
 }
 
-// Can be used to copy StatementsState or to extract just the StatementsState fields from an object
-function copyStatementsState(state: StatementsState)
+function newStatementsState(
+	statements: StatementMap = {},
+	nextStatementId: number = 0,
+	functionsState: Functions.FunctionsState = Functions.newFunctionsState()) : StatementsState
 {
-	return newStatementsState(state.statements, state.nextStatementId);
+	return { statements, nextStatementId, functionsState };
 }
 
 function withNewStatement(state: StatementsState,
@@ -68,7 +103,12 @@ function withNewStatement(state: StatementsState,
 	const newStatements = newMapWithEntry(state.statements,
                                           state.nextStatementId,
                                           newStatement);
-	return newStatementsState(newStatements, state.nextStatementId + 1);
+	return newStatementsState(newStatements, state.nextStatementId + 1, state.functionsState);
+}
+
+function withNewFunctionsState(state: StatementsState, functionsState: Functions.FunctionsState) : StatementsState
+{
+	return { ...state, functionsState };
 }
 
 function getAllStatements(state: StatementsState)
@@ -81,17 +121,23 @@ function getStatement(state: StatementsState, statementId: number)
 	return state.statements[statementId];
 }
 
+function getFunctionsState(state: StatementsState)
+{
+	return state.functionsState;
+}
 
 export
 {
 	StatementState,
 	newStatementState,
-	copyStatementsState,
 	getStatementContainerComponent,
 	getInspectorContainerComponent,
 	StatementsState,
+	initStatementsState,
 	newStatementsState,
 	withNewStatement,
+	withNewFunctionsState,
 	getStatement,
-	getAllStatements
+	getAllStatements,
+	getFunctionsState
 };

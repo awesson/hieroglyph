@@ -1,7 +1,4 @@
-import { ArgumentState } from './Arguments';
-import ArgumentDefState = ArgumentState.ArgumentDefState;
-import getArgumentTypes = ArgumentState.getArgumentTypes;
-import getArgumentNames = ArgumentState.getArgumentNames;
+import { ArgumentDefState, getArgumentTypes, getArgumentNames } from './Arguments';
 import { Type, mapToDefaultValues } from '../../Types';
 import { INumberMap, newMapWithEntry } from '../../ObjectMaps';
 

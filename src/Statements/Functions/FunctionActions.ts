@@ -1,17 +1,5 @@
 import { Type } from '../../Types';
-
-interface AddFunctionCallAction
-{
-	type: "AddFunctionCallAction";
-	funcDefId: number;
-}
-
-function createAddFunctionCallAction(funcDefId: number): AddFunctionCallAction
-{
-	return { type: "AddFunctionCallAction", funcDefId };
-}
-
-type AnyFunctionAction = AddFunctionCallAction;
+import DefaultAction from '../../Misc/DefaultAction'
 
 
 interface SetFunctionCallArgumentAction
@@ -29,7 +17,7 @@ function createSetFunctionCallArgumentAction(funcCallId: number,
 	return { type: "SetFunctionCallArgumentAction", funcCallId, argIndex, argValue };
 }
 
-type AnyFunctionCallAction = SetFunctionCallArgumentAction;
+type AnyFunctionCallAction = SetFunctionCallArgumentAction | DefaultAction;
 
 
 interface SetFunctionDefArgumentTypeAction
@@ -47,8 +35,21 @@ function createSetFunctionDefArgumentTypeAction(funcDefId: number,
 	return { type: "SetFunctionDefArgumentTypeAction", funcDefId, argIndex, argType };
 }
 
-type AnyFunctionDefAction = SetFunctionDefArgumentTypeAction;
+type AnyFunctionDefAction = SetFunctionDefArgumentTypeAction | DefaultAction;
 
+
+interface AddFunctionCallAction
+{
+	type: "AddFunctionCallAction";
+	funcDefId: number;
+}
+
+function createAddFunctionCallAction(funcDefId: number): AddFunctionCallAction
+{
+	return { type: "AddFunctionCallAction", funcDefId };
+}
+
+type AnyFunctionAction = AddFunctionCallAction | AnyFunctionCallAction | AnyFunctionDefAction;
 
 export
 {

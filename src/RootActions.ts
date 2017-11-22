@@ -1,3 +1,4 @@
-import Statements, { Functions } from './Statements';
+import Statements from './Statements';
 
-export type AllActions = Statements.AnyStatementAction | Functions.AnyFunctionAction;
+
+export type AllActions = Statements.AnyStatementAction;

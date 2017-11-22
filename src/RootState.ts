@@ -2,54 +2,34 @@ import React from 'react';
 
 import { StatementType } from './Statements/StatementTypes';
 import { Type } from './Types';
-import { Functions, StatementState } from './Statements';
-import FunctionsState = Functions.FunctionState.FunctionsState;
-import withNewFuncDef = Functions.FunctionState.withNewFuncDef;
-import newFunctionsState = Functions.FunctionState.newFunctionsState;
-import newArgumentDefState = Functions.Arguments.ArgumentState.newArgumentDefState;
+import { StatementState } from './Statements';
 import StatementsState = StatementState.StatementsState;
 import newStatementsState = StatementState.newStatementsState;
 
-export interface RootState extends StatementsState, FunctionsState
+export interface RootState
 {
+	statementsState: StatementsState;
 }
 
 export function initRootState()
 {
-	let functionsState = newFunctionsState();
-
-	// TODO: Eventually deserialize this data the same as how the user
-	// created data will get deserialized.
-	const printArg = newArgumentDefState("statement", Type.String);
-	functionsState = withNewFuncDef(functionsState,
-	                                "Print",
-	                                Type.Void,
-	                                [printArg]);
-	const sqrtArg = newArgumentDefState("value", Type.Float);
-	functionsState = withNewFuncDef(functionsState,
-	                                "SquareRoot",
-	                                Type.Float,
-	                                [sqrtArg]);
-	const absArg = newArgumentDefState("value", Type.Float);
-	functionsState = withNewFuncDef(functionsState,
-	                                "AbsoluteValue",
-	                                Type.Float,
-	                                [absArg]);
-	const clampValueArg = newArgumentDefState("value", Type.Float);
-	const clampMinArg = newArgumentDefState("min", Type.Float);
-	const clampMaxArg = newArgumentDefState("max", Type.Float);
-	functionsState = withNewFuncDef(functionsState,
-	                                "Clamp",
-	                                Type.Float,
-	                                [clampValueArg, clampMinArg, clampMaxArg]);
-
-	return { ...functionsState, ...newStatementsState() };
+	return { statementsState: StatementState.initStatementsState() };
 }
 
-export function newRootState(functionsState : FunctionsState = newFunctionsState(),
-                             statementsState : StatementsState = newStatementsState()): RootState
+export function newRootState(statementsState : StatementsState = newStatementsState()): RootState
 {
-	return { ...functionsState, ...statementsState };
+	return { statementsState };
+}
+
+export function getStatementsState(state: RootState)
+{
+	return state.statementsState;
+}
+
+export function getFunctionsState(state: RootState)
+{
+	const statementsState = getStatementsState(state);
+	return StatementState.getFunctionsState(statementsState);
 }
 
 export default RootState;

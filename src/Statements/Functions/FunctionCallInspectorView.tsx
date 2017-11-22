@@ -5,7 +5,7 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 import RootState from '../../RootState';
 import { Type } from '../../Types';
 import { FunctionCallState, FunctionDefState, getFuncArgTypes } from './FunctionState';
-import { ArgumentInputView, OnArgValueChangeCallback } from './Arguments';
+import { ArgumentInputView } from './Arguments';
 import { IInspectorCompProps } from '../../Editors/Inspectors';
 
 import '../../index.css';

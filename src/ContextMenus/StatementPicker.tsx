@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import RootState from '../RootState';
-import { createAddFunctionCallAction, FunctionState } from '../Statements/Functions'
-import getAllFuncDefs = FunctionState.getAllFuncDefs;
+import RootState, { getFunctionsState } from '../RootState';
+import { createAddFunctionCallAction, getAllFuncDefs } from '../Statements/Functions'
 import DropDownSelector, { IItemInfo } from './DropDownSelector'
 
 
@@ -12,7 +11,7 @@ const mapStateToProps = (rootState: RootState) =>
 {
 	// TODO: Should eventually be more than just function defs.
 	let itemInfos: IItemInfo[] = [];
-	const funcDefs = getAllFuncDefs(rootState);
+	const funcDefs = getAllFuncDefs(getFunctionsState(rootState));
 	for (let id in funcDefs)
 	{
 		const funcDef = funcDefs[id];

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { getStatementContainerComponent, getStatement } from './StatementState';
 import StatementListView, { IStatementListViewConnectedProps } from './StatementListView';
-import RootState from '../RootState';
+import RootState, { getStatementsState } from '../RootState';
 
 
 
@@ -23,9 +23,10 @@ export interface IStatementElement
 
 const mapStateToProps = (rootState: RootState, myProps: IStatementListViewConnectedProps) =>
 {
+	const statementsState = getStatementsState(rootState);
 	const statementToElement = (statementId: number) : IStatementElement =>
 	{
-		const statement = getStatement(rootState, statementId);
+		const statement = getStatement(statementsState, statementId);
 		const comp = getStatementContainerComponent(statement);
 
 		const concreteStatementId = statement.concreteStatementId;
