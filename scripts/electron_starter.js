@@ -11,6 +11,39 @@ const url = require('url');
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+function initDevToos(mainWindow)
+{
+	mainWindow.webContents.openDevTools();
+
+	// It looks relative to the working directory even with the %LOCALAPPDATA% env variable,
+	// so just hard coding the drive and user here :(
+	let extensionsLoc = path.join('C:',
+									'Users',
+									'Andrew',
+									'AppData',
+									'Local',
+									'Google',
+									'Chrome',
+									'User Data',
+									'Default',
+									'Extensions');
+	if (process.platform == 'darwin')
+	{
+		extensionsLoc = path.join('/Users',
+									'andrew',
+									'Library',
+									'Application Support',
+									'Google',
+									'Chrome',
+									'Default',
+									'Extensions');
+	}
+	// react
+	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "fmkadmapgofadopljbjfkapdkoienihi", "2.5.2_0"));
+	// redux
+	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "lmhkpmbekcpmknklioeibfkpmmfibljd", "2.15.1_0"));
+}
+
 function createWindow()
 {
 	// Create the browser window.
@@ -36,18 +69,8 @@ function createWindow()
 			mainWindow.loadURL('http://localhost:3000');
 		}
 
-		mainWindow.webContents.openDevTools();
-
-		// It looks relative to the working directory even with the %LOCALAPPDATA% env variable,
-		// so just hard coding the drive here.
-		// TODO: Handle the location on macOS as well
-		const extensionsLoc = 'C:\\Users\\Andrew\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\';
-		BrowserWindow.addDevToolsExtension(extensionsLoc + "fmkadmapgofadopljbjfkapdkoienihi\\2.5.2_0");
-		BrowserWindow.addDevToolsExtension(extensionsLoc + "lmhkpmbekcpmknklioeibfkpmmfibljd\\2.15.1_0");
+		initDevToos(mainWindow);
 	}
-
-	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
 
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function()
