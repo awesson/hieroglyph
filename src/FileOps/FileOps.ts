@@ -63,17 +63,6 @@ function unlinkFileWithPromise(filename: string)
 	});
 }
 
-interface OverwriteFileArgs
-{
-	filename: string;
-	fileContents: string;
-	encoding: string;
-}
-function createOverwriteFileArgs(filename: string, fileContents: string, encoding: string): OverwriteFileArgs
-{
-	return { filename, fileContents, encoding };
-}
-
 // Note: Not thread safe
 let runningOverwrites:Set<string> = new Set<string>();
 let pendingOverwrites:Map<string, IArguments> = new Map<string, IArguments>();
