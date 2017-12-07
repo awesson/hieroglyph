@@ -16,7 +16,7 @@ export function initRootState()
 	return { statementsState: StatementState.initStatementsState() };
 }
 
-export function newRootState(statementsState : StatementsState = newStatementsState()): RootState
+export function newRootState(statementsState: StatementsState = newStatementsState()): RootState
 {
 	return { statementsState };
 }

@@ -17,26 +17,28 @@ function initDevToos(mainWindow)
 
 	// It looks relative to the working directory even with the %LOCALAPPDATA% env variable,
 	// so just hard coding the drive and user here :(
-	let extensionsLoc = path.join('C:',
-									'Users',
-									'Andrew',
-									'AppData',
-									'Local',
-									'Google',
-									'Chrome',
-									'User Data',
-									'Default',
-									'Extensions');
-	if (process.platform == 'darwin')
+	let extensionsLoc = path.join(
+		'C:',
+		'Users',
+		'Andrew',
+		'AppData',
+		'Local',
+		'Google',
+		'Chrome',
+		'User Data',
+		'Default',
+		'Extensions');
+	if (process.platform === 'darwin')
 	{
-		extensionsLoc = path.join('/Users',
-									'andrew',
-									'Library',
-									'Application Support',
-									'Google',
-									'Chrome',
-									'Default',
-									'Extensions');
+		extensionsLoc = path.join(
+			'/Users',
+			'andrew',
+			'Library',
+			'Application Support',
+			'Google',
+			'Chrome',
+			'Default',
+			'Extensions');
 	}
 	// react
 	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "fmkadmapgofadopljbjfkapdkoienihi", "2.5.2_0"));
@@ -53,7 +55,7 @@ function createWindow()
 	if (process.env.NODE_ENV === 'production')
 	{
 		mainWindow.loadURL(url.format({
-            pathname: path.join(__dirname, '/../build/index.html'),
+            pathname: path.join(__dirname, '..', 'build', 'index.html'),
             protocol: 'file:',
             slashes: true
         }));
@@ -107,6 +109,3 @@ app.on('activate', function()
 		createWindow();
 	}
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
