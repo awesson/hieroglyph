@@ -3,8 +3,6 @@ import { InputGroup, Input, InputGroupAddon } from 'reactstrap';
 
 import { OnArgValueChangeCallback, IArgumentInputElementProps } from './ArgumentInputView';
 
-import '../../../index.css';
-
 
 function isNumeric(num: any)
 {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { StatementType } from './Statements/StatementTypes';
 import { Type } from './Types';
 import { StatementState } from './Statements';
@@ -8,7 +6,7 @@ import newStatementsState = StatementState.newStatementsState;
 
 export interface RootState
 {
-	statementsState: StatementsState;
+	readonly statementsState: StatementsState;
 }
 
 export function initRootState()

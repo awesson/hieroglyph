@@ -3,8 +3,6 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 
 import { IStatementElement } from './StatementListContainer';
 
-import '../index.css';
-
 
 type StatementSelectedCallback = (statementId: number, event: React.MouseEvent<any>) => void;
 

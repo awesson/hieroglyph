@@ -9,8 +9,6 @@ import getAllStatements = StatementState.getAllStatements;
 import { StatementPicker } from '../ContextMenus';
 import { InspectorContainer } from '../Editors/Inspectors';
 
-import '../index.css';
-
 
 interface IAppProps
 {

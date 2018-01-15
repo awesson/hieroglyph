@@ -1,3 +1,9 @@
+// There is a bug in webpack or extract-text-webpack-plugin or both:
+// https://github.com/webpack/webpack/issues/215
+// Explicitly importing the bootstrap css here enforces the order.
+// Otherwise the bootstrap css gets packed after this css and I can't override the styles anymore.
+@import '~bootstrap/dist/css/bootstrap.css';
+
 .header {
     padding-top: 20px;
 	  font-size: 23px;
