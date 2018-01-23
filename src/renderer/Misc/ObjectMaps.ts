@@ -13,4 +13,9 @@ function newMapWithEntry<T>(map: INumberMap<T>, key: number, value: T) : INumber
 	return Object.assign({ ...map }, { [key]: value });
 }
 
-export { INumberMap, newMapWithEntry };
+function getKeys<T>(map: INumberMap<T>)
+{
+	return Object.keys(map).map((str:string) => Number(str));
+}
+
+export { INumberMap, newMapWithEntry, getKeys };

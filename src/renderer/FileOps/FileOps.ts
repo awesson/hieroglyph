@@ -5,8 +5,11 @@ import path from 'path';
 import { Store } from 'redux';
 import { initRootState, RootState } from '../RootState';
 
-
-const userDataDir = remote.app.getPath('userData');
+// TEMP
+// There is a bug in electron-webpack where the name of the app isn't set. Hard coding it here for now.
+const userDataDir = path.join(remote.app.getPath('userData'), '..', 'hieroglyph');
+console.log(userDataDir);
+// /TEMP
 const tempDir = remote.app.getPath('temp');
 
 function writeFileWithPromise(filename: string, fileContents: string, encoding: string)
@@ -63,7 +66,7 @@ function unlinkFileWithPromise(filename: string)
 	});
 }
 
-// Note: Not thread safe
+// Note: Not thread safe for the same file
 let runningOverwrites:Set<string> = new Set<string>();
 let pendingOverwrites:Map<string, IArguments> = new Map<string, IArguments>();
 function overwriteFile(filename: string, fileContents: string, encoding: string)
@@ -110,7 +113,7 @@ function overwriteFile(filename: string, fileContents: string, encoding: string)
 		.then(onWriteSuccess)
 		.catch(onWriteFail)
 		.then(onOverwriteComplete)
-		.catch(err => {}); // If the cleanup fails, we don't really care
+		.catch(err => {}); // If the cleanup from a failure fails, we don't really care
 }
 
 const storeFileEncoding = 'utf8';
@@ -134,9 +137,16 @@ function loadStore(): RootState
 	}
 }
 
+const sourceFileEncoding = 'utf8';
+const compiledSourceFileName = path.join(userDataDir, 'source.');
+function writeSourceFile(source: string, extension: string)
+{
+	overwriteFile(compiledSourceFileName + extension, source, sourceFileEncoding);
+}
+
 export default
 {
-	overwriteFile,
+	writeSourceFile,
 	saveStore,
 	loadStore
 };

@@ -1,4 +1,4 @@
-import { INumberMap, newMapWithEntry } from '../ObjectMaps';
+import { INumberMap, newMapWithEntry } from '../Misc/ObjectMaps';
 import { StatementType } from './StatementTypes';
 import * as Functions from './Functions';
 import Arguments = Functions.Arguments;
@@ -39,6 +39,11 @@ function getInspectorContainerComponent(state: StatementState)
 	}
 }
 
+function getType(state: StatementState)
+{
+	return state.type;
+}
+
 
 type StatementMap = INumberMap<StatementState>;
 
@@ -56,31 +61,38 @@ function initStatementsState()
 	// TODO: Eventually deserialize this data the same as how the user
 	// created data will get deserialized.
 	const printArg = Arguments.newArgumentDefState("statement", Type.String);
-	functionsState = Functions.withNewFuncDef(
+	functionsState = Functions.withNewBuiltInFuncDef(
 		functionsState,
 		"Print",
 		Type.Void,
-		[printArg]);
+		[printArg],
+		"print",
+		null);
 	const sqrtArg = Arguments.newArgumentDefState("value", Type.Float);
-	functionsState = Functions.withNewFuncDef(
+	functionsState = Functions.withNewBuiltInFuncDef(
 		functionsState,
 		"SquareRoot",
 		Type.Float,
-		[sqrtArg]);
+		[sqrtArg],
+		"sqrt",
+		"math");
 	const absArg = Arguments.newArgumentDefState("value", Type.Float);
-	functionsState = Functions.withNewFuncDef(
+	functionsState = Functions.withNewBuiltInFuncDef(
 		functionsState,
 		"AbsoluteValue",
 		Type.Float,
-		[absArg]);
-	const clampValueArg = Arguments.newArgumentDefState("value", Type.Float);
-	const clampMinArg = Arguments.newArgumentDefState("min", Type.Float);
-	const clampMaxArg = Arguments.newArgumentDefState("max", Type.Float);
-	functionsState = Functions.withNewFuncDef(
+		[absArg],
+		"abs",
+		null);
+	const baseArg = Arguments.newArgumentDefState("base", Type.Float);
+	const exponentArg = Arguments.newArgumentDefState("exp", Type.Float);
+	functionsState = Functions.withNewBuiltInFuncDef(
 		functionsState,
-		"Clamp",
+		"RaiseToPower",
 		Type.Float,
-		[clampValueArg, clampMinArg, clampMaxArg]);
+		[baseArg, exponentArg],
+		"pow",
+		"math");
 
 	return newStatementsState({}, 0, functionsState);
 }
@@ -132,6 +144,7 @@ export
 	newStatementState,
 	getStatementContainerComponent,
 	getInspectorContainerComponent,
+	getType,
 	StatementsState,
 	initStatementsState,
 	newStatementsState,

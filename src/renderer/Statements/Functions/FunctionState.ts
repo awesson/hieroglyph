@@ -1,26 +1,68 @@
 import { ArgumentDefState, getArgumentTypes, getArgumentNames } from './Arguments';
 import { Type, mapToDefaultValues } from '../../Types';
-import { INumberMap, newMapWithEntry } from '../../ObjectMaps';
+import { INumberMap, newMapWithEntry } from '../../Misc/ObjectMaps';
 
 
-export interface FunctionDefState
+interface FunctionDefState
 {
 	readonly myId: number;
 	readonly name: string;
 	readonly returnType: Type;
 	readonly argumentDefs: ArgumentDefState[];
-	readonly statements: number[];
-	readonly isBuiltin: boolean;
 }
 
-export function newFunctionDefState(myId: number,
-                                    name: string = "unnamed",
-                                    returnType: Type = Type.Void,
-                                    argumentDefs: ArgumentDefState[] = [],
-                                    isBuiltin: boolean = true,
-                                    statements: number[] = []) : FunctionDefState
+export interface UserFunctionDefState extends FunctionDefState
 {
-	return { myId, name, returnType, argumentDefs, statements, isBuiltin };
+	readonly statements: number[];
+	readonly isBuiltIn: false;
+}
+
+export interface BuiltInFunctionDefState extends FunctionDefState
+{
+	readonly builtInName: string;
+	readonly source: string;
+	readonly isBuiltIn: true;
+}
+
+export type AnyFunctionDefState = UserFunctionDefState | BuiltInFunctionDefState;
+
+export function newUserFunctionDefState(myId: number,
+                                        name: string,
+                                        returnType: Type,
+                                        argumentDefs: ArgumentDefState[],
+                                        statements: number[]) : UserFunctionDefState
+{
+	if (!name || name.length == 0)
+	{
+		name = "unknown";
+	}
+	if (!argumentDefs)
+	{
+		argumentDefs = [];
+	}
+	if (!statements)
+	{
+		statements = [];
+	}
+	return { myId, name, returnType, argumentDefs, statements, isBuiltIn: false };
+}
+
+export function newBuiltInFunctionDefState(myId: number,
+                                           name: string,
+                                           returnType: Type,
+                                           argumentDefs: ArgumentDefState[],
+                                           builtInName: string,
+                                           source: string) : BuiltInFunctionDefState
+{
+	if (!name || name.length == 0)
+	{
+		name = "unknown";
+	}
+	if (!argumentDefs)
+	{
+		argumentDefs = [];
+	}
+	return { myId, name, returnType, argumentDefs, builtInName, source, isBuiltIn: true };
 }
 
 export function getFuncArgTypes(state: FunctionDefState)
@@ -44,7 +86,7 @@ export interface FunctionCallState
 	readonly myId: number;
 	readonly funcDefId: number;
 	// For now the user will be inputing argument types through a text field.
-	// This works for outputting to a .cs file just fine.
+	// This works for outputting to a source file just fine.
 	readonly passedArguments: string[];
 }
 
@@ -64,7 +106,7 @@ export function setArgument(state: FunctionCallState, index: number, value: stri
 }
 
 
-export type FunctionDefMap = INumberMap<FunctionDefState>;
+export type FunctionDefMap = INumberMap<AnyFunctionDefState>;
 
 export type FunctionCallMap = INumberMap<FunctionCallState>;
 
@@ -103,17 +145,35 @@ export function withNewFunctionCall(state: FunctionsState, sourceFuncDefId: numb
 	                         state.nextFunctionCallId + 1);
 }
 
-export function withNewFuncDef(state: FunctionsState,
-                               name: string = "unnamed",
-                               returnType: Type = Type.Void,
-                               argumentDefs: ArgumentDefState[] = [],
-                               isBuiltin: boolean = true)
+export function withNewBuiltInFuncDef(state: FunctionsState,
+                                      name: string,
+                                      returnType: Type,
+                                      argumentDefs: ArgumentDefState[],
+                                      builtInName: string,
+                                      source: string)
 {
-	const newFuncDef = newFunctionDefState(state.nextFunctionId,
-	                                       name,
-	                                       returnType,
-	                                       argumentDefs,
-	                                       isBuiltin);
+	const newFuncDef = newBuiltInFunctionDefState(state.nextFunctionId,
+	                                              name,
+	                                              returnType,
+	                                              argumentDefs,
+	                                              builtInName,
+	                                              source);
+	return withNewFuncDef(state, newFuncDef);
+}
+
+export function withNewUserFuncDef(state: FunctionsState,
+                                   name: string,
+                                   returnType: Type,
+                                   argumentDefs: ArgumentDefState[])
+{
+	// new funtion starts out with no statements
+	const statements = [];
+	const newFuncDef = newUserFunctionDefState(state.nextFunctionId, name, returnType, argumentDefs, statements);
+	return withNewFuncDef(state, newFuncDef);
+}
+
+export function withNewFuncDef(state: FunctionsState, newFuncDef: AnyFunctionDefState)
+{
 	const newFuncDefMap = newMapWithEntry(state.functions, state.nextFunctionId, newFuncDef);
 	return newFunctionsState(newFuncDefMap,
 	                         state.nextFunctionId + 1,

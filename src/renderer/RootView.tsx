@@ -5,9 +5,10 @@ import { Provider } from 'react-redux';
 
 import './index.scss';
 import App from './App';
+import RootState from './RootState';
 
 
-function createView(store: Store<any>)
+function createView(store: Store<RootState>)
 {
 	ReactDOM.render(
 		<Provider store={store}>

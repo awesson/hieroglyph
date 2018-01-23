@@ -10,7 +10,7 @@ import
 	FunctionsState
 } from './FunctionState';
 import { AnyFunctionAction, AnyFunctionCallAction, AnyFunctionDefAction } from './FunctionActions';
-import { newMapWithEntry } from '../../ObjectMaps';
+import { newMapWithEntry } from '../../Misc/ObjectMaps';
 import identityReducer from '../../Misc/IdentityReducer';
 
 
