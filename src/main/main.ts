@@ -44,7 +44,7 @@ function initDevTools()
 			'Extensions');
 	}
 	// react
-	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "fmkadmapgofadopljbjfkapdkoienihi", "2.5.2_0"));
+	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "fmkadmapgofadopljbjfkapdkoienihi", "3.1.0_0"));
 	// redux
 	BrowserWindow.addDevToolsExtension(path.join(extensionsLoc, "lmhkpmbekcpmknklioeibfkpmmfibljd", "2.15.1_0"));
 }
